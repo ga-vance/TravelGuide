@@ -1,0 +1,19 @@
+{
+  "name": "cpsc471-final-proj",
+  "version": "1.0.0",
+  "description": "The CPSC471 final project between e-seng and ga-vance at the University of Calgary",
+  "main": "index.js",
+  "scripts": {
+    "test": "ROOT=./public node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ga-vance/CPSC471FinalProject.git"
+  },
+  "author": "ga-vance, e-seng",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ga-vance/CPSC471FinalProject/issues"
+  },
+  "homepage": "https://github.com/ga-vance/CPSC471FinalProject#readme"
+}
