@@ -38,6 +38,22 @@ function getHTML(reqPath, response){
   });
 }
 
+function getCSS(reqPath, response){
+  let filePath = `${ROOT}${reqPath}`;
+
+  fs.readFile(filePath, (err, data) => {
+    if(err){
+      response.errMsg = err;
+      send404(response);
+      return;
+    }
+
+    response.writeHead(200, {"Content-Type": "text/css"});
+    response.write(data);
+    response.end();
+  });
+}
+
 function onRequest(request, response){
   let urlInfo = url.parse(request.url, true);
   // Request path on urlInfo.pathname
@@ -55,6 +71,9 @@ function onRequest(request, response){
         case("/"):
         case("/index.html"):
           getHTML(urlInfo.pathname, response);
+          break;
+        case("/css/styles.css"):
+          getCSS(urlInfo.pathname, response);
           break;
         default:
           send404(response);
