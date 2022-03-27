@@ -86,12 +86,14 @@ function onRequest(request, response){
       switch(urlInfo.pathname){
         case("/"):
         case("/index.html"):
+        case("/search"):
+        case("/search.html"):
           getHTML(urlInfo.pathname, response);
           break;
         case("/css/styles.css"):
           getCSS(urlInfo.pathname, response);
           break;
-        case("/js/app.js"):
+        case("/js/search.js"):
           getJS(urlInfo.pathname, response);
           break;
         default:
