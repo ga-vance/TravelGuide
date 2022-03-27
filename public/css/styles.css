@@ -20,11 +20,15 @@ body *{
   display: grid;
 
   grid-template-columns: auto 1fr auto auto;
-  min-height: min-content;
+  height: min-content;
+  min-height: 3rem;
   background-color: var(--navbar-bg);
   gap: 1rem;
   position: absolute;
   top: 0;
+  transition: height 1s ease-in-out;
+
+  z-index: 1;
 }
 
 #navbar .title{
@@ -33,11 +37,17 @@ body *{
 
 #search-bar{
   margin-left: auto;
-  height: min-content;
+  height: 100%;
   width: 50vw;
   display: flex;
   flex-direction: row;
   gap: 1rem;
+  transition: height 1s ease-in-out;
+  overflow: hidden;
+}
+
+#search-bar.hidden{
+  height: 0;
 }
 
 #search-bar .search-component{
@@ -85,7 +95,17 @@ body *{
     grid-column: 1/4;
     flex-direction: column;
     width: 100%;
+
+    background: var(--navbar-bg);
   }
+}
+
+#search-icon:hover{
+  cursor: pointer;
+}
+
+#search-icon.disabled{
+  display:none;
 }
 
 /** main styles **/
