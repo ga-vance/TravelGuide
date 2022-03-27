@@ -155,6 +155,10 @@ body *{
     top: 30%;
     font-size: 30rem;
   }
+
+  #navbar.home #search-bar{
+    background: none;
+  }
 }
 
 /** main styles **/

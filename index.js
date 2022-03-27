@@ -93,6 +93,7 @@ function onRequest(request, response){
           getCSS(urlInfo.pathname, response);
           break;
         case("/js/search.js"):
+        case("/js/home.js"):
           getJS(urlInfo.pathname, response);
           break;
         default:
