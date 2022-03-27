@@ -16,10 +16,10 @@ body *{
 /* navbar styles */
 #navbar{
   width: calc(100vw - 2rem);
-  padding: 2rem 1rem;
+  padding: 1rem;
   display: grid;
 
-  grid-template-columns: auto 1fr 5rem;
+  grid-template-columns: auto 1fr auto auto;
   min-height: min-content;
   background-color: var(--navbar-bg);
   gap: 1rem;
@@ -32,18 +32,18 @@ body *{
 }
 
 #search-bar{
-  margin-left: min-content;
-  min-width: fit-content;
+  margin-left: auto;
   height: min-content;
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(20rem, max-content));
+  width: 50vw;
+  display: flex;
+  flex-direction: row;
   gap: 1rem;
-  place-items: center;
 }
 
 #search-bar .search-component{
-  display: flex;
-  width: 100%;
+  display: grid;
+  flex-grow: 1;
+  grid-template-columns: 4rem 1fr auto;
 }
 
 #search-bar label{
@@ -56,9 +56,11 @@ body *{
   border: none;
   padding: 1rem;
   border-radius: 1.5rem;
+  box-sizing: border-box;
 }
 
 #search-bar input[type="text"]{
+  min-width: fit-content;
   width: 100%;
 }
 
@@ -70,6 +72,20 @@ body *{
   width: 3rem;
   height: 3rem;
   background: none;
+}
+
+@media screen and (max-width: 800px){
+  #navbar{
+    grid-template-columns: 1fr auto auto;
+    grid-template-rows: auto 1fr;
+  }
+
+  #search-bar{
+    grid-row: 2;
+    grid-column: 1/4;
+    flex-direction: column;
+    width: 100%;
+  }
 }
 
 /** main styles **/
