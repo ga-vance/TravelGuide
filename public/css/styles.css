@@ -25,7 +25,7 @@ body *{
   gap: 1rem;
   position: absolute;
   top: 0;
-  transition: height 1s ease-in-out;
+  transition: height 1s ease-in-out, background 1s ease-in-out;
 
   z-index: 1;
 }
@@ -112,6 +112,49 @@ body *{
 
 #search-icon.disabled{
   display:none;
+}
+
+/** home menu styles **/
+#plane-bg{
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: var(--navbar-bg);
+
+  transition: transform 1s ease-in-out, background 1s ease-in-out;
+}
+
+#plane-bg h1{
+  position: fixed;
+  font-size: 50rem;
+  opacity: 0.5;
+  top: 5%;
+  left: -5%;
+
+  transition: transform 1s ease-in-out;
+}
+
+#navbar.home{
+  height: 100%;
+  place-items: center;
+  background: none;
+}
+
+#plane-bg.search{
+  background: none;
+}
+
+#plane-bg.search h1{
+  transform: translateX(130%) translateY(-100%);
+}
+
+@media screen and (max-width: 800px){
+  #plane-bg h1{
+    left: -40%;
+    top: 30%;
+    font-size: 30rem;
+  }
 }
 
 /** main styles **/
