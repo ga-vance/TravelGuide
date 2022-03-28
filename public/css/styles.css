@@ -1,0 +1,167 @@
+:root{
+  font-size: 16px;
+  font-family: 'Nunito', sans-serif;
+
+  --navbar-bg: #8893f4;
+  --text-box: #eeeff9
+}
+
+body,
+body *{
+  margin: 0;
+  padding: 0;
+  display: block;
+}
+
+/* navbar styles */
+#navbar{
+  width: calc(100% - 2rem);
+  padding: 1rem;
+  display: grid;
+
+  grid-template-columns: auto 1fr auto auto;
+  height: 3rem;
+  background-color: var(--navbar-bg);
+  gap: 1rem;
+  position: absolute;
+  top: 0;
+  transition: height 1s ease-in-out, background 1s ease-in-out;
+
+  z-index: 1;
+}
+
+#navbar .title{
+  font-weight: 700;
+}
+
+#search-bar{
+  margin-left: auto;
+  height: 3rem;
+  width: 50vw;
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  transition: height 1s ease-in-out;
+  overflow: hidden;
+}
+
+#search-bar.hidden{
+  height: 0;
+  padding: 0 0.5rem;
+  transition: height 1s ease-in-out, padding 1s ease-in-out;
+}
+
+#search-bar .search-component{
+  display: grid;
+  flex-grow: 1;
+  grid-template-columns: 4rem 1fr auto;
+}
+
+#search-bar label{
+  margin: auto 0;
+  margin-right: 0.2rem;
+}
+
+#search-bar input{
+  background: var(--text-box);
+  border: none;
+  padding: 1rem;
+  border-radius: 1.5rem;
+  box-sizing: border-box;
+}
+
+#search-bar input[type="text"]{
+  min-width: fit-content;
+  width: 100%;
+}
+
+#search-bar input[type="date"]{
+  min-width: fit-content;
+}
+
+#search-bar input[type="submit"]{
+  width: 3rem;
+  height: 3rem;
+  background: none;
+}
+
+@media screen and (max-width: 800px){
+  #navbar{
+    grid-template-columns: 1fr auto auto;
+    grid-template-rows: auto 1fr;
+  }
+
+  #search-bar{
+    grid-row: 2;
+    grid-column: 1/4;
+    flex-direction: column;
+    padding: 0.5rem;
+    padding-top: 0;
+    width: calc(100% - 0.5rem);
+
+    border-radius: 0.2rem;
+
+    height: 12rem;
+    background: var(--navbar-bg);
+  }
+}
+
+#search-icon:hover{
+  cursor: pointer;
+}
+
+#search-icon.disabled{
+  display:none;
+}
+
+/** home menu styles **/
+#plane-bg{
+  position: fixed;
+  top: 0;
+  height: 100%;
+  width: 100%;
+  background: var(--navbar-bg);
+
+  transition: transform 1s ease-in-out, background 1s ease-in-out;
+}
+
+#plane-bg h1{
+  position: fixed;
+  font-size: 50rem;
+  opacity: 0.5;
+  top: 5%;
+  left: -5%;
+
+  transition: transform 1s ease-in-out;
+}
+
+#navbar.home{
+  height: 100%;
+  place-items: center;
+  background: none;
+}
+
+#plane-bg.search{
+  background: none;
+}
+
+#plane-bg.search h1{
+  transform: translateX(130%) translateY(-100%);
+}
+
+@media screen and (max-width: 800px){
+  #plane-bg h1{
+    left: -40%;
+    top: 30%;
+    font-size: 30rem;
+  }
+
+  #navbar.home #search-bar{
+    background: none;
+  }
+}
+
+/** main styles **/
+#main{
+  padding-top: 5rem; /* leave room for the navbar */
+}
