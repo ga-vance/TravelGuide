@@ -91,6 +91,7 @@ function onRequest(request, response){
           getHTML(urlInfo.pathname, response);
           break;
         case("/css/styles.css"):
+        case("/css/search.css"):
           getCSS(urlInfo.pathname, response);
           break;
         case("/js/search.js"):

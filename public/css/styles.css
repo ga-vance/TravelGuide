@@ -3,7 +3,8 @@
   font-family: 'Nunito', sans-serif;
 
   --navbar-bg: #8893f4;
-  --text-box: #eeeff9
+  --text-box: #eeeff9;
+  --container-outline: #d4d2ef;
 }
 
 body,
