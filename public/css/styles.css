@@ -33,6 +33,43 @@ body *{
 #navbar .title{
   font-weight: 700;
 }
+.createAccount {
+  display: flex;
+  list-style: none;
+  font-size: 0.7em;
+  margin: 0;
+  width: 100%;
+}
+.push {
+  margin-left: auto;
+}
+#login-form {
+  margin-left: center;
+  height: 3rem;
+  width: 5vw;
+}
+
+#login-form .login-component {
+  display: grid;
+  flex-grow: 1;
+}
+
+#login-form input {
+  background: var(--text-box);
+  border: none;
+  padding: 1rem;
+  border-radius: 1.5rem;
+  box-sizing: border-box;
+}
+#login-form input[type="text"] {
+  min-width: fit-content;
+  width: 100%;
+}
+#login-form input[type="submit"] {
+  font-size: 16px;
+  text-align: left;
+  background: none;
+}
 
 #search-bar{
   margin-left: auto;
