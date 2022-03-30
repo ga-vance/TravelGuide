@@ -34,11 +34,15 @@ body *{
   font-weight: 700;
 }
 .createAccount {
-  display: flex;
-  list-style: none;
-  font-size: 0.7em;
-  margin: 0;
-  width: 100%;
+  padding-top: 10px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+  width: 150px;
+  height: 30px;
+  background-color: #93F488;
+  color: black;
+  border-radius: 25px;
 }
 .push {
   margin-left: auto;
