@@ -87,6 +87,7 @@ function onRequest(request, response){
         case("/"):
         case("/index.html"):
         case("/login.html"):
+        case("/signup.html"):
         case("/search.html"):
           getHTML(urlInfo.pathname, response);
           break;

@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta lang="en" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,700;1,200&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <script defer src="/js/search.js"></script>
+    <div id="navbar">
+      <h1 class="title">Travel Guide</h1>
+      <h1 class="push">👤</h1>
+    </div>
+    <div id="main">
+        <form id="signupForm">
+            <h1 class="title">Create an Account</h1>
+            <div class="create-account-form">
+                <label for="nameInput">Name</label>
+                <input type="text" name="name" id="nameInput" placeholder="Name">
+            </div>
+            <div class="create-account-form">
+                <label for="ccInput">Payment Information</label>
+                <input type="text" name="creditCard" id="ccInput" placeholder="Credid Card Number">
+                <label for="expInput">Expiry</label>
+                <input type="text" name="expiryDate" id="expInput" placeholder="MM/YY">
+            </div>
+            <div class="create-account-form">
+                <label for="frequentFlierInput">Frequent Flier</label>
+                <input type="text" name="freqFlier" id="Frequent" placeholder="Airline">
+                <label for="tierInput">Tier</label>
+                <select name="tier" id="tierInput">
+                    <option>Tier</option>
+                    <option value="01">Gold</option>
+                    <option value="02">Silver</option>
+                    <option value="03">Bronze</option>
+                </select>
+            </div>
+            <div class="create-account-form">
+                <label for="usernameInput">Username</label>
+                <input type="text" name="username" id="usernameInput" placeholder="Username">
+            </div>
+            <div class="create-account-form">
+                <label for="passwordInput">Password</label>
+                <input type="password" name="password" id="passwordInput" placeholder="Password">
+            </div>
+            <div class="create-account-form">
+                <label for="passwordInput2">Confirm Password</label>
+                <input type="password" name="password2" id="passwordInput2" placeholder="Confirm Password">
+            </div>
+            <div class="create-account-form">
+                <input type="submit" value="Continue">
+
+            </div>
+        </form>
+    </div>
+  </body>
+</html>
