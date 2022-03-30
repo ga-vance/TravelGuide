@@ -35,11 +35,15 @@ body *{
   font-weight: 700;
 }
 .createAccount {
-  display: flex;
-  list-style: none;
-  font-size: 0.7em;
-  margin: 0;
-  width: 100%;
+  padding-top: 10px;
+  text-align: center;
+  text-decoration: none;
+  font-weight: bold;
+  width: 150px;
+  height: 30px;
+  background-color: #93F488;
+  color: black;
+  border-radius: 25px;
 }
 .push {
   margin-left: auto;
@@ -202,4 +206,46 @@ body *{
 /** main styles **/
 #main{
   padding-top: 5rem; /* leave room for the navbar */
+}
+
+#main .title {
+  margin-top: 20px;
+  padding-top: 30px;
+  font-size: 1.5rem;
+  text-align: center;
+}
+
+#signupForm {
+  font-weight: bold;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
+
+.create-account-form {
+  padding: 10px 10px 10px 10px;
+}
+
+.create-account-form input {
+  width: 150px;
+  height: 25px;
+  border-radius: 8px;
+}
+
+.create-account-form select {
+  width: 150px;
+  height: 25px;
+  border-radius: 8px;
+}
+
+.create-account-form ::placeholder {
+  padding-left: 0.5rem;
+}
+
+#signupForm input[type="submit"] {
+  font-size: 16px;
+  font-weight: bold;
+  text-align: center;
+  height: 30px;
+  background: #8893f4;
 }
