@@ -1,0 +1,43 @@
+services:
+  web:
+    container_name: cpsc471_webserver
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+    ports:
+      - "8000:8000"
+    restart: unless-stopped
+    networks:
+      - internal
+  api:
+    container_name: cpsc471_apiserver
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+    networks:
+      - internal
+
+  database:
+    container_name: cpsc471_database
+    image: wangxian/alpine-mysql
+    env_file:
+      - .env
+    environment:
+      - MYSQL_ROOT_PASSWORD
+      - MYSQL_USER
+      - MYSQL_PASSWORD
+    ports:
+      - "3306:3306"
+    networks:
+      - internal
+
+networks:
+  internal:

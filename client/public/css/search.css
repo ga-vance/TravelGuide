@@ -1,0 +1,35 @@
+#main{
+  display: flex;
+  flex-direction: column;
+  margin: 1rem 2rem;
+  min-height: min-content;
+  gap: 1rem;
+}
+
+.flight-result{
+  padding: 0.5rem;
+  width: calc(100% - 1rem);
+  display: grid;
+  min-height: 5rem;
+  grid-template-columns: 1fr 1fr 1fr;
+  place-items: center;
+  gap: 1rem;
+  border-radius: 1rem;
+  border: solid 2px var(--container-outline);
+}
+
+.flight-result h1{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
+
+.flight-result > h1::before,
+.flight-result > h1::after{
+  content: "";
+  width: 100%;
+  height: 0;
+  border: dotted 1px var(--container-outline);
+}
+

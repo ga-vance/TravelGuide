@@ -1,0 +1,58 @@
+#main{
+  height: 100%;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+  grid-template-rows: auto 2fr 1fr;
+  place-items: center;
+  gap: 1rem;
+  margin: 1rem 2rem;
+}
+
+#user-icon{
+  height: auto;
+  width: 100%;
+}
+
+.user-pane{
+  border: solid 2px var(--container-outline);
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+#reservations{
+  grid-column: 1/-1;
+  margin: 1rem;
+}
+
+.reservation{
+  display: grid;
+  grid-template-rows: auto 1fr;
+  border: solid 2px var(--container-outline);
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.reservation > h1{
+  width: 100%;
+  line-height: 200%;
+  background-color: var(--strong-accent);
+  padding-left: 1rem;
+}
+
+.reservation-details{
+  padding: 1rem 2rem;
+}
+
+#account-manage{
+  grid-column: 1/-1;
+  align-items: center;
+}
+
+#account-manage > .form-buttons{
+  display: flex;
+  margin: 2rem 0;
+  gap: 3rem;
+}
