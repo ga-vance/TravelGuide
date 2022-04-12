@@ -89,9 +89,14 @@ function onRequest(request, response){
         case("/login.html"):
         case("/signup.html"):
         case("/search.html"):
+        case("/admin-panel.html"):
+        case("/user-panel.html"):
           getHTML(urlInfo.pathname, response);
           break;
         case("/css/styles.css"):
+        case("/css/search.css"):
+        case("/css/admin-panel.css"):
+        case("/css/user-panel.css"):
           getCSS(urlInfo.pathname, response);
           break;
         case("/js/search.js"):

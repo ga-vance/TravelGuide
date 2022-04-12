@@ -3,7 +3,14 @@
   font-family: 'Nunito', sans-serif;
 
   --navbar-bg: #8893f4;
-  --text-box: #eeeff9
+  --text-box: #eeeff9;
+  --container-outline: #d4d2ef;
+  --strong-accent: #e48142;
+  --background: #efe9f2;
+}
+
+body{
+  background: var(--background);
 }
 
 body,

@@ -4,7 +4,8 @@
   "description": "The CPSC471 final project between e-seng and ga-vance at the University of Calgary",
   "main": "index.js",
   "scripts": {
-    "test": "ROOT=./public node index.js"
+    "test": "ROOT=./public node index.js",
+    "start": "ROOT=/var/www/html node index.js"
   },
   "repository": {
     "type": "git",
