@@ -45,9 +45,9 @@ services:
       - internal
     healthcheck:
       test: ["CMD", "nc", "-z", "localhost", "3306"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
+      interval: 2s
+      timeout: 1s
+      retries: 10
 
 networks:
   internal:
