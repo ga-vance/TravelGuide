@@ -2,10 +2,9 @@ const mysql = require('mysql');
 
 const express = require('express');
 const { response } = require('express');
-// var router = express.Router();
 var router = express();
 router.use(express.json());
-router.use(express.urlencoded());
+
 
 // get user login information for the database
 // const sql_host = process.env.MYSQL_HOST || "cpsc471_database";
@@ -45,37 +44,38 @@ function sendError(response, error){
 }
 
 
-router.get("/test", (request, response) => {
-  var conn = generateConnection();
-  conn.connect((err) => {
-    if(err){
-      sendError(response, err);
-      return;
-    }
+// router.get("/test", (request, response) => {
+//   var conn = generateConnection();
+//   conn.connect((err) => {
+//     if(err){
+//       sendError(response, err);
+//       return;
+//     }
 
-    conn.query("SELECT * FROM flightbooking.admin", (err, data) => {
-      if(err){
-        sendError(response, err);
-        return;
-      }
+//     conn.query("SELECT * FROM flightbooking.admin", (err, data) => {
+//       if(err){
+//         sendError(response, err);
+//         return;
+//       }
 
-      sendData(response, data);
-    });
-  });
-});
+//       sendData(response, data);
+//     });
+//   });
+// });
 
-router.get("/flight", (request, response) => {
-  var conn = generateConnection();
-  conn.connect((err) => {
-    if(err){
-      sendError(response, err);
-      return;
-    }
-  });
-});
+// router.get("/flight", (request, response) => {
+//   var conn = generateConnection();
+//   conn.connect((err) => {
+//     if(err){
+//       sendError(response, err);
+//       return;
+//     }
+//   });
+// });
 
-// Get all of the users from the database
-router.get("/getusers", (request, response) => {
+
+// Get all of the users in the database
+router.get("/users", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
     if (err) {
@@ -92,6 +92,79 @@ router.get("/getusers", (request, response) => {
   });
 });
 
+// Get a specific user from the database
+router.get("/users/:userID", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    conn.query("SELECT * FROM flightbooking.users WHERE userID = ?", [request.params.userID], (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
+// Insert a new user into the database Create User
+router.post("/users", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    const parameters = request.body;
+    conn.query("INSERT INTO `flightbooking`.`users` SET ?", parameters, (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
+// Delete a user account from the database
+router.delete("/users/:userID", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    conn.query("DELETE FROM flightbooking.users WHERE userID = ?", [request.params.userID], (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
+// Update user information
+router.put("/users/:userID", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    const { username, name, password, creditcardnumber, creditcardExpiry } = request.body
+    conn.query("UPDATE flightbooking.users SET username = ?, name = ?, password = ?, creditcardnumber = ?, creditcardExpiry = ? WHERE userID = ?", [username, name, password, creditcardnumber, creditcardExpiry,request.params.userID], (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
 
 
 module.exports = router;
