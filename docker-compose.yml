@@ -22,8 +22,12 @@ services:
     environment:
       - MYSQL_USER
       - MYSQL_PASSWORD
+      - MYSQL_DATABASE
     networks:
       - internal
+    depends_on:
+      database:
+        condition: service_healthy
 
   database:
     container_name: cpsc471_database
@@ -34,10 +38,16 @@ services:
       - MYSQL_ROOT_PASSWORD
       - MYSQL_USER
       - MYSQL_PASSWORD
+      - MYSQL_DATABASE
     ports:
       - "3306:3306"
     networks:
       - internal
+    healthcheck:
+      test: ["CMD", "nc", "-z", "localhost", "3306"]
+      interval: 2s
+      timeout: 1s
+      retries: 10
 
 networks:
   internal:
