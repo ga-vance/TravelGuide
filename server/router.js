@@ -19,6 +19,20 @@ function generateConnection(){
   return conn;
 }
 
+function sendData(response, data){
+  response.json({
+    failed: false,
+    data: data,
+  });
+}
+
+function sendError(response, error){
+  response.json({
+    failed: true,
+    message: error.message,
+  });
+}
+
 router.get("/", (request, response) => {
   response.send("seems to be working fine!");
 });
@@ -27,10 +41,28 @@ router.get("/test", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
     if(err){
-      response.send(err.message);
+      sendError(response, err);
       return;
     }
-    response.send("still good");
+
+    conn.query("SELECT * FROM flightbooking.admin", (err, data) => {
+      if(err){
+        sendError(response, err);
+        return;
+      }
+
+      sendData(response, data);
+    });
+  });
+});
+
+router.get("/flight", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if(err){
+      sendError(response, err);
+      return;
+    }
   });
 });
 
