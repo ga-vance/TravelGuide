@@ -28,7 +28,7 @@ CREATE TABLE `admin` (
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`adminIn`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-);
+) ENGINE=InnoDB AUTO_INCREMENT=2;
 
 --
 -- Dumping data for table `admin`
@@ -52,7 +52,7 @@ CREATE TABLE `aircraft` (
   PRIMARY KEY (`aircraftID`),
   KEY `owned_by_idx` (`owned_by`),
   CONSTRAINT `owned_by` FOREIGN KEY (`owned_by`) REFERENCES `airline` (`name`)
-);
+) ENGINE=InnoDB AUTO_INCREMENT=16;
 
 --
 -- Dumping data for table `aircraft`
@@ -75,7 +75,7 @@ CREATE TABLE `airline` (
   PRIMARY KEY (`name`),
   KEY `hq_airport_idx` (`hq_airport`),
   CONSTRAINT `hq_airport` FOREIGN KEY (`hq_airport`) REFERENCES `airport` (`airportCode`)
-);
+) ENGINE=InnoDB;
 
 --
 -- Dumping data for table `airline`
@@ -95,7 +95,7 @@ CREATE TABLE `airline_ratings` (
   `rating` int NOT NULL,
   KEY `airline_name_idx` (`airline_name`),
   CONSTRAINT `airline_name` FOREIGN KEY (`airline_name`) REFERENCES `airline` (`name`)
-);
+) ENGINE=InnoDB;
 
 --
 -- Dumping data for table `airline_ratings`
@@ -115,7 +115,7 @@ CREATE TABLE `airport` (
   `country` varchar(255) DEFAULT NULL,
   `city` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`airportCode`)
-);
+) ENGINE=InnoDB;
 
 --
 -- Dumping data for table `airport`
@@ -146,7 +146,7 @@ CREATE TABLE `flight` (
   CONSTRAINT `aircraft` FOREIGN KEY (`aircraft`) REFERENCES `aircraft` (`aircraftID`),
   CONSTRAINT `airline` FOREIGN KEY (`airline`) REFERENCES `airline` (`name`),
   CONSTRAINT `route` FOREIGN KEY (`route`) REFERENCES `route` (`name`)
-);
+) ENGINE=InnoDB;
 
 --
 -- Dumping data for table `flight`
@@ -165,7 +165,7 @@ CREATE TABLE `frequentFlier` (
   `airline` varchar(255) NOT NULL,
   `tier` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`customerID`,`airline`)
-);
+) ENGINE=InnoDB;
 
 --
 -- Dumping data for table `frequentFlier`
@@ -190,7 +190,7 @@ CREATE TABLE `reservation` (
   KEY `customerID_idx` (`customerID`),
   CONSTRAINT `customerID` FOREIGN KEY (`customerID`) REFERENCES `users` (`userID`),
   CONSTRAINT `flightID` FOREIGN KEY (`flightNumber`) REFERENCES `flight` (`flightnumID`)
-);
+) ENGINE=InnoDB;
 
 --
 -- Dumping data for table `reservation`
@@ -209,7 +209,7 @@ CREATE TABLE `restrictions` (
   `severity` int DEFAULT NULL,
   `Description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`type`)
-);
+) ENGINE=InnoDB;
 
 --
 -- Dumping data for table `restrictions`
@@ -235,7 +235,7 @@ CREATE TABLE `route` (
   CONSTRAINT `destination` FOREIGN KEY (`destination`) REFERENCES `airport` (`airportCode`),
   CONSTRAINT `origin` FOREIGN KEY (`origin`) REFERENCES `airport` (`airportCode`),
   CONSTRAINT `restriction` FOREIGN KEY (`restriction`) REFERENCES `restrictions` (`type`)
-);
+) ENGINE=InnoDB;
 
 --
 -- Dumping data for table `route`
@@ -258,7 +258,7 @@ CREATE TABLE `users` (
   `creditcardnumber` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`userID`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-);
+) ENGINE=InnoDB AUTO_INCREMENT=2;
 
 --
 -- Dumping data for table `users`

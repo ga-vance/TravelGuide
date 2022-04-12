@@ -16,7 +16,6 @@ function generateConnection(){
     password: sql_pass,
   });
 
-  console.log(`[info] user "${sql_user}", pass "${sql_pass}"`);
   return conn;
 }
 
