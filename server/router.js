@@ -1,12 +1,21 @@
 const mysql = require('mysql');
 
 const express = require('express');
-var router = express.Router();
+const { response } = require('express');
+// var router = express.Router();
+var router = express();
+router.use(express.json());
+router.use(express.urlencoded());
 
 // get user login information for the database
-const sql_host = process.env.MYSQL_HOST || "cpsc471_database";
-const sql_user = process.env.MYSQL_USER || "root";
-const sql_pass = process.env.MYSQL_PASSWORD || "111111";
+// const sql_host = process.env.MYSQL_HOST || "cpsc471_database";
+// const sql_user = process.env.MYSQL_USER || "root";
+// const sql_pass = process.env.MYSQL_PASSWORD || "111111";
+
+// Greg's development credentials
+const sql_host = "localhost";
+const sql_user = "root";
+const sql_pass = "password";
 
 function generateConnection(){
   // connect to the database within network
@@ -33,9 +42,6 @@ function sendError(response, error){
   });
 }
 
-router.get("/", (request, response) => {
-  response.send("seems to be working fine!");
-});
 
 router.get("/test", (request, response) => {
   var conn = generateConnection();
@@ -65,5 +71,25 @@ router.get("/flight", (request, response) => {
     }
   });
 });
+
+// Get all of the users from the database
+router.get("/getusers", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    conn.query("SELECT * FROM flightbooking.users", (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
+
 
 module.exports = router;
