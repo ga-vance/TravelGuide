@@ -20,6 +20,7 @@ function generateConnection(){
 }
 
 function sendData(response, data){
+  response.set("Access-Control-Allow-Origin", "*");
   response.json({
     failed: false,
     data: data,
@@ -27,6 +28,7 @@ function sendData(response, data){
 }
 
 function sendError(response, error){
+  response.set("Access-Control-Allow-Origin", "*");
   response.json({
     failed: true,
     message: error.message,
