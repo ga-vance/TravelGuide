@@ -4,7 +4,7 @@ const express = require('express');
 var router = express.Router();
 
 // get user login information for the database
-const sql_host = "cpsc471_database";
+const sql_host = process.env.MYSQL_HOST || "cpsc471_database";
 const sql_user = process.env.MYSQL_USER || "root";
 const sql_pass = process.env.MYSQL_PASSWORD || "111111";
 
