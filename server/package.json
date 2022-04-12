@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
-    "test": "nodemon index.js"
+    "test": "MYSQL_USER='root' MYSQL_PASSWORD='password' MYSQL_HOST='localhost' nodemon index.js"
   },
   "author": "ga-vance, e-seng",
   "license": "ISC",
