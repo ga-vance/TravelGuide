@@ -49,36 +49,71 @@
           </div>
         </div>
       </div>
-      <form class="user-pane" id="account-manage">
-        <div>
-          <label for="name">Name:</label>
-          <input name="name" type="text" value="Tim Apple" placeholder="First Last" />
-        </div>
-        <div>
-          <label for="username">Username:</label>
-          <input name="username" type="text" value="timapple123" placeholder="Username" />
-        </div>
-        <div>
-          <label for="password">Password:</label>
-          <input name="password" type="password" value="*********" placeholder="Password" />
-        </div>
-        <div>
-          <label for="confirm-password">Confirm Password:</label>
-          <input name="confirm-password" type="password" value="*********" placeholder="Confirm Password" />
-        </div>
-        <div>
-          <label for="credit-card">Credit Card:</label>
-          <input name="credit-card" type="number" value="****-4412" placeholder="1234-5678-9012-1234" />
-        </div>
-        <div>
-          <label for="credit-card">Expiry:</label>
-          <input name="credit-card" type="text" value="" placeholder="MM/YY" />
-        </div>
-        <div class="form-buttons">
-          <input type="submit" value="Update"/>
-          <input type="submit" value="Delete Account"/>
-        </div>
-      </form>
+      <div class="user-pane" id="account-manage">
+        <form id="update-freq-flyers">
+          <label for="airline">Frequent Flyer Information:</label>
+          <div>
+            <div>
+              <select name="airline">
+                <optgroup label="A">
+                  <option value="Air Canada">Air Canada</option>
+                  <option value="American Airlines">American Airlines</option>
+                </optgroup>
+                <optgroup label="B">
+                  <option value="British Airways">British Airways</option>
+                </optgroup>
+                <optgroup label="S">
+                  <option value="South African Airways">South African Airways</option>
+                </optgroup>
+                <optgroup label="T">
+                  <option value="Thai Airways">Thai Airways</option>
+                </optgroup>
+                <optgroup label="W">
+                  <option value="WestJet">WestJet</option>
+                </optgroup>
+              </select>
+            </div>
+            <div>
+              <select name="tier">
+                <option value=1>Silver</option>
+                <option value=2>Gold</option>
+                <option value=3>Platinum</option>
+              </select>
+            </div>
+          </div>
+          <input type="submit" value="Update Frequent Flyer details" />
+        </form>
+        <form id="update-account">
+          <div>
+            <label for="name">Name:</label>
+            <input name="name" type="text" value="Tim Apple" placeholder="First Last" />
+          </div>
+          <div>
+            <label for="username">Username:</label>
+            <input name="username" type="text" value="timapple123" placeholder="Username" />
+          </div>
+          <div>
+            <label for="password">Password:</label>
+            <input name="password" type="password" value="*********" placeholder="Password" />
+          </div>
+          <div>
+            <label for="confirm-password">Confirm Password:</label>
+            <input name="confirm-password" type="password" value="*********" placeholder="Confirm Password" />
+          </div>
+          <div>
+            <label for="credit-card">Credit Card:</label>
+            <input name="credit-card" type="number" value="****-4412" placeholder="1234-5678-9012-1234" />
+          </div>
+          <div>
+            <label for="credit-card">Expiry:</label>
+            <input name="credit-card" type="text" value="" placeholder="MM/YY" />
+          </div>
+          <div class="form-buttons">
+            <input type="submit" value="Update Account"/>
+            <input type="submit" value="Delete Account"/>
+          </div>
+        </form>
+      </div>
     </div>
   </body>
 </html>
