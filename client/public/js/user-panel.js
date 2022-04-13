@@ -17,19 +17,21 @@ async function f(){
     return;
   }
   var userId = tokenData.userId;
-  var userInfo = await fetch(`${apiOrigin}/users/${userId}`, {
+  var userJson = await fetch(`${apiOrigin}/users/${userId}`, {
     method: "GET",
     headers: {
       "Authorization": `Bearer ${token}`,
     },
   }).then((res) => {return res.json();});
 
-  if(userInfo.failed || userInfo.data.length == 0){
+  if(userJson.failed || userJson.data.length == 0){
     console.error("[error] cannot access user panel");
     console.error(userInfo.message);
     window.location.href = "/login.html";
     return;
   }
+
+  var userInfo = userJson.data[0];
 
   if(tokenData.isAdmin){
     // account is actually administrative, go to admin panel
@@ -38,6 +40,12 @@ async function f(){
   }
 
   console.log(userInfo);
+  document.querySelector("#user-info > h1").innerText = userInfo.name;
+  var updateAccount = document.querySelector("#update-account");
+  updateAccount.name.value = userInfo.name;
+  updateAccount.username.value = userInfo.username;
+  updateAccount["credit-number"].value = `************${userInfo.creditcardnumber.substr(-4)}`;
+  updateAccount["credit-expire"].value = userInfo.creditcardExpiry;
 }
 
 window.addEventListener("load", () => {f()})
