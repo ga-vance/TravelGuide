@@ -7,7 +7,7 @@ RUN apk add --upgrade nodejs npm mysql-client && \
 
 WORKDIR /opt/nodeapi/
 
-COPY *.js package.json CPSC471Project.sql /opt/nodeapi/
+COPY *.js package.json flightbooking.sql /opt/nodeapi/
 RUN npm install && chown -R node: /opt/nodeapi
 
 USER node

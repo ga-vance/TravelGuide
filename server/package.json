@@ -4,7 +4,7 @@
   "description": "API server for CPSC 471 Final Project",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js",
+    "start": "mysql --user=$MYSQL_USER --password=$MYSQL_PASSWORD -h $MYSQL_HOST flightbooking < ./flightbooking.sql; node index.js",
     "test": "MYSQL_USER='root' MYSQL_PASSWORD='password' MYSQL_HOST='localhost' nodemon index.js"
   },
   "author": "ga-vance, e-seng",
