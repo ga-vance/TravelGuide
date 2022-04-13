@@ -43,37 +43,6 @@ function sendError(response, error){
   });
 }
 
-
-// router.get("/test", (request, response) => {
-//   var conn = generateConnection();
-//   conn.connect((err) => {
-//     if(err){
-//       sendError(response, err);
-//       return;
-//     }
-
-//     conn.query("SELECT * FROM flightbooking.admin", (err, data) => {
-//       if(err){
-//         sendError(response, err);
-//         return;
-//       }
-
-//       sendData(response, data);
-//     });
-//   });
-// });
-
-// router.get("/flight", (request, response) => {
-//   var conn = generateConnection();
-//   conn.connect((err) => {
-//     if(err){
-//       sendError(response, err);
-//       return;
-//     }
-//   });
-// });
-
-
 // Get all of the users in the database
 router.get("/users", (request, response) => {
   var conn = generateConnection();
@@ -175,7 +144,7 @@ router.get("/flights", (request, response) => {
       return;
     }
     const { origin, destination, departure_date } = request.body;
-    conn.query("SELECT f.flightNumber, r.origin, f.departure_date, f.departure_time, r.destination, f.arrival_date, f.arrival_time, f.airline FROM flightbooking.flight AS f INNER JOIN flightbooking.route AS r on r.name = f.route WHERE r.origin = ? AND r.destination = ? and f.departure_date = ? ORDER BY f.departure_time", [origin, destination, departure_date], (err, data) => {
+    conn.query("SELECT f.airline, f.flightNumber, r.origin, f.departure_date, f.departure_time, r.destination, f.arrival_date, f.arrival_time FROM flightbooking.flight AS f INNER JOIN flightbooking.route AS r on r.name = f.route WHERE r.origin = ? AND r.destination = ? and f.departure_date = ? ORDER BY f.departure_time", [origin, destination, departure_date], (err, data) => {
       if (err) {
         sendError(response, err);
         return;
@@ -232,6 +201,81 @@ router.put("/flights/:flightnumID", (request, response) => {
     }
     const parameters = request.body;
     conn.query("UPDATE `flightbooking`.`flight` SET ? WHERE flightnumID = ?", [parameters, request.params.flightnumID], (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
+// Add Frequent Flier status
+router.post("/frequentFlier", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    const parameters = request.body;
+    conn.query("INSERT INTO `flightbooking`.`frequentFlier` SET ?", parameters, (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
+// Get frequent flier statuses of a customer
+router.get("/frequentFlier/:customerID", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    conn.query("SELECT * FROM flightbooking.frequentFlier WHERE customerID = ?", [request.params.customerID], (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
+// Give a rating to an Airline (Create Rating entry)
+router.post("/ratings", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    const parameters = request.body;
+    conn.query("INSERT INTO `flightbooking`.`airlineRatings` SET ?", parameters, (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
+// Get average rating of an Airline
+router.get("/ratings", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    const { airline_name } = request.body;
+    conn.query("SELECT airline_name, ROUND(AVG(rating),1) 'rating' FROM flightbooking.airlineRatings WHERE airline_name = ? GROUP BY airline_name", airline_name, (err, data) => {
       if (err) {
         sendError(response, err);
         return;
