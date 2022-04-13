@@ -36,6 +36,21 @@ function sendError(response, error){
   });
 }
 
+function validateToken(request, response){
+  var token = request.header("Authorization").split(' ').slice(-1)[0];
+  var tokenString = new Buffer.from(token.split(' ').slice(-1)[0].split('.')[1], 'base64').toString('ascii')
+  var tokenId = JSON.parse(tokenString).userId;
+  console.log(typeof tokenId);
+  try{
+    if(jwt.verify(token, process.env.JWT_SECRET_KEY)){
+      return tokenId;
+    }
+    return null;
+  }catch (err){
+    return null;
+  }
+}
+
 router.get("/", (request, response) => {
   response.send("seems to be working fine!");
 });
@@ -75,6 +90,15 @@ router.post("/user/genToken", (request, response) => {
       });
   });
 });
+
+router.get("/test-token", (request, response) => {
+  if(!validateToken(request)){ // to check if a userId matches, compare userId === validateToken(request)
+    response.sendStatus(403);
+    return;
+  }
+
+  response.send("validated! working as intended");
+})
 
 router.get("/test", (request, response) => {
   var conn = generateConnection();
