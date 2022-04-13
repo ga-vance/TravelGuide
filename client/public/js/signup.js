@@ -41,6 +41,7 @@ function f(){
     }
 
     console.log("[info] signed up successfully!");
+    window.location.href = "/";
   });
 }
 

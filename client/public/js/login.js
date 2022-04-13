@@ -4,7 +4,7 @@
 function f(){
   const apiOrigin = `http://${window.location.hostname}:3000`
 
-  function checkToken(resJson){
+  function onLogin(resJson){
     if(resJson.failed){
       console.error("[error] Something went wrong...");
       console.error(resJson.message);
@@ -13,6 +13,7 @@ function f(){
 
     localStorage.setItem("sesstoken", resJson.data.token);
     console.log("successfully logged in");
+    window.location.href = "/";
   }
   document.querySelector("#login-form").addEventListener("submit", (evt) => {
     evt.preventDefault();
@@ -28,7 +29,7 @@ function f(){
         user,
         pass,
       }),
-    }).then((res) => res.json()).then(checkToken);
+    }).then((res) => res.json()).then(onLogin);
   });
 }
 
