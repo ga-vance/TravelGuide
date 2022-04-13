@@ -41,7 +41,7 @@ function f(){
     }
 
     console.log("[info] signed up successfully!");
-    window.location.href = "/";
+    window.location.href = "/login.html";
   });
 }
 
