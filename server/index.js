@@ -4,7 +4,7 @@ const { exec } = require("child_process");
 const port = process.env.PORT || 3000;
 
 // initialize database
-exec("mysql --user=$MYSQL_USER --password=$MYSQL_PASSWORD -h cpsc471_database flightbooking < ./CPSC471Project.sql");
+exec("mysql --user=$MYSQL_USER --password=$MYSQL_PASSWORD -h cpsc471_database flightbooking < ./flightbooking.sql");
 
 const router = require("./router.js");
 

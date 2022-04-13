@@ -7,14 +7,14 @@ router.use(express.json());
 
 
 // get user login information for the database
-// const sql_host = process.env.MYSQL_HOST || "cpsc471_database";
-// const sql_user = process.env.MYSQL_USER || "root";
-// const sql_pass = process.env.MYSQL_PASSWORD || "111111";
+const sql_host = process.env.MYSQL_HOST || "cpsc471_database";
+const sql_user = process.env.MYSQL_USER || "root";
+const sql_pass = process.env.MYSQL_PASSWORD || "111111";
 
-// Greg's development credentials
-const sql_host = "localhost";
-const sql_user = "root";
-const sql_pass = "password";
+// // Greg's development credentials
+// const sql_host = "localhost";
+// const sql_user = "root";
+// const sql_pass = "password";
 
 function generateConnection(){
   // connect to the database within network
@@ -284,5 +284,30 @@ router.get("/ratings", (request, response) => {
     });
   });
 });
+
+// "Book" (create) a reservation
+router.post("/reservation", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    const parameters = request.body;
+    conn.query("INSERT INTO flightbooking.reservation SET ?", parameters, (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
+// "cancel" (delete) a reservation
+
+// See all reservations of a user
+
+// See all reservations of a flight
 
 module.exports = router;
