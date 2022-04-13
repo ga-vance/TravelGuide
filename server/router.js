@@ -185,4 +185,60 @@ router.get("/flights", (request, response) => {
   });
 });
 
+// Add a new flight to the database
+router.post("/flights", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    const parameters = request.body;
+    conn.query("INSERT INTO `flightbooking`.`flight` SET ?", parameters, (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
+// Delete a flight from the database
+router.delete("/flights/:flightnumID", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    conn.query("DELETE FROM flightbooking.flight WHERE flightnumID = ?", [request.params.flightnumID], (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
+// Update details of a flight
+router.put("/flights/:flightnumID", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    const parameters = request.body;
+    conn.query("UPDATE `flightbooking`.`flight` SET ? WHERE flightnumID = ?", [parameters, request.params.flightnumID], (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
 module.exports = router;
