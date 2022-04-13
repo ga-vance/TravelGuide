@@ -155,7 +155,7 @@ router.put("/users/:userID", (request, response) => {
       sendError(response, err);
       return;
     }
-    const { username, name, password, creditcardnumber, creditcardExpiry } = request.body
+    const { username, name, password, creditcardnumber, creditcardExpiry } = request.body;
     conn.query("UPDATE flightbooking.users SET username = ?, name = ?, password = ?, creditcardnumber = ?, creditcardExpiry = ? WHERE userID = ?", [username, name, password, creditcardnumber, creditcardExpiry,request.params.userID], (err, data) => {
       if (err) {
         sendError(response, err);
@@ -166,5 +166,23 @@ router.put("/users/:userID", (request, response) => {
   });
 });
 
+// Get Flights on Origin Destination and date
+router.get("/flights", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    const { origin, destination, departure_date } = request.body;
+    conn.query("SELECT f.flightNumber, r.origin, f.departure_date, f.departure_time, r.destination, f.arrival_date, f.arrival_time, f.airline FROM flightbooking.flight AS f INNER JOIN flightbooking.route AS r on r.name = f.route WHERE r.origin = ? AND r.destination = ? and f.departure_date = ? ORDER BY f.departure_time", [origin, destination, departure_date], (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
 
 module.exports = router;
