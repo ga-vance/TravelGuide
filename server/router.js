@@ -83,15 +83,43 @@ router.post("/users/genToken", (request, response) => {
         }
 
         if(data.length == 0){
-          sendError(response, {message: "Username or password does not match"});
+          // this means that the user is likely not a customer, may be an admin
           return;
         }
 
         const {userId, username} = data[0];
-        const token = jwt.sign({userId, username}, process.env.JWT_SECRET_KEY);
+        const token = jwt.sign({
+          userId,
+          username,
+          isAdmin: false,
+        }, process.env.JWT_SECRET_KEY);
 
         sendData(response, {token});
-      });
+    });
+
+    conn.query("SELECT adminId, username FROM flightbooking.admin WHERE username = ? AND password = ?",
+      [user, pass],
+      (err, data) => {
+        if(err){
+          sendError(response, err);
+          return;
+        }
+
+        if(data.length == 0){
+          sendError(response, {message: "Username or password does not match"});
+          return;
+        }
+
+        const {adminId, username} = data[0];
+        console.log(data[0]);
+        const token = jwt.sign({
+          userId: adminId,
+          username,
+          isAdmin: true,
+        }, process.env.JWT_SECRET_KEY);
+
+        sendData(response, {token});
+    });
   });
 });
 
