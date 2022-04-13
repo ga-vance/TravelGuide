@@ -500,5 +500,25 @@ router.get("/admin", (request, response) => {
   });
 });
 
+// Update the admin account information
+// Takes a JSON object
+// formatted {name:String,username:String,password:String}
+router.put("/admin/:adminID", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    const parameters = request.body;
+    conn.query("UPDATE `flightbooking`.`admin` SET ? WHERE adminID = ?", [parameters, request.params.adminID], (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
 
 module.exports = router;
