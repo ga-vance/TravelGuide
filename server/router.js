@@ -99,7 +99,8 @@ router.get("/test-token", (request, response) => {
   response.send("validated! working as intended");
 })
 
-// Get all of the users in the database
+// Get all of the users in the database. Admin functionality
+// Just query the route with no body get the information back
 router.get("/users", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
@@ -118,6 +119,7 @@ router.get("/users", (request, response) => {
 });
 
 // Get a specific user from the database
+// Query the route/userID to get that users information back
 router.get("/users/:userID", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
@@ -136,6 +138,8 @@ router.get("/users/:userID", (request, response) => {
 });
 
 // Insert a new user into the database Create User
+// This route takes a JSON object that includes the users information in the following format
+// {username:String,name:String,password:String,creditcardnumber:String,creditcardExpiry:String(dd/dd)}
 router.post("/users", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
@@ -155,6 +159,7 @@ router.post("/users", (request, response) => {
 });
 
 // Delete a user account from the database
+// send to users/userID and that user will be romoved from the database
 router.delete("/users/:userID", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
@@ -173,6 +178,10 @@ router.delete("/users/:userID", (request, response) => {
 });
 
 // Update user information
+// This takes a JSON object with all of the same information to create a new user
+// {username:String,name:String,password:String,creditcardnumber:String,creditcardExpiry:String(dd/dd)}
+// Even if not all the information is being changed, all of the information needs to be send including information
+// that hasn't changed
 router.put("/users/:userID", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
@@ -192,6 +201,8 @@ router.put("/users/:userID", (request, response) => {
 });
 
 // Get Flights on Origin Destination and date
+// Query this route with a JSON object in format
+// {origin:String,destination:String,departure_date:date(YYYY-MM-DD)}
 router.get("/flights", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
@@ -200,7 +211,7 @@ router.get("/flights", (request, response) => {
       return;
     }
     const { origin, destination, departure_date } = request.body;
-    conn.query("SELECT f.airline, f.flightNumber, r.origin, f.departure_date, f.departure_time, r.destination, f.arrival_date, f.arrival_time FROM flightbooking.flight AS f INNER JOIN flightbooking.route AS r on r.name = f.route WHERE r.origin = ? AND r.destination = ? and f.departure_date = ? ORDER BY f.departure_time", [origin, destination, departure_date], (err, data) => {
+    conn.query("SELECT f.flightnumID, f.airline, f.flightNumber, r.origin, f.departure_date, f.departure_time, r.destination, f.arrival_date, f.arrival_time FROM flightbooking.flight AS f INNER JOIN flightbooking.route AS r ON r.name = f.route WHERE r.origin = ? AND r.destination = ? and f.departure_date = ? ORDER BY f.departure_time", [origin, destination, departure_date], (err, data) => {
       if (err) {
         sendError(response, err);
         return;
@@ -210,7 +221,9 @@ router.get("/flights", (request, response) => {
   });
 });
 
-// Add a new flight to the database
+// Add a new flight to the database  Admin Functionality
+// Takes a JSON object formatted
+// {"airline": String,"flightNumber": String,"route": String,"departure_date": Date (YYYY-MM-DD),"departure_time": TIME (HH:MM:ss (24HR)),"arrival_date": Date (YYYY-MM-DD),"arrival_time": TIME (HH:MM:ss (24HR)),"aircraft": INT}
 router.post("/flights", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
@@ -229,7 +242,8 @@ router.post("/flights", (request, response) => {
   });
 });
 
-// Delete a flight from the database
+// Delete a flight from the database Admin Functionality
+// Include the flightnumID in the route to delete that flight
 router.delete("/flights/:flightnumID", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
@@ -247,7 +261,9 @@ router.delete("/flights/:flightnumID", (request, response) => {
   });
 });
 
-// Update details of a flight
+// Update details of a flight Admin Functionality
+// Include the flight number in the route as well as a JSON object including all information about the flight formatted
+// {"airline": String,"flightNumber": String,"route": String,"departure_date": Date (YYYY-MM-DD),"departure_time": TIME (HH:MM:ss (24HR)),"arrival_date": Date (YYYY-MM-DD),"arrival_time": TIME (HH:MM:ss (24HR)),"aircraft": INT}
 router.put("/flights/:flightnumID", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
@@ -267,6 +283,8 @@ router.put("/flights/:flightnumID", (request, response) => {
 });
 
 // Add Frequent Flier status
+// Takes a JSON object formatted
+// {"customerID" : INT,"airline": String,"tier": STRING}
 router.post("/frequentFlier", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
@@ -285,7 +303,7 @@ router.post("/frequentFlier", (request, response) => {
   });
 });
 
-// Get frequent flier statuses of a customer
+// Get frequent flier statuses of a customer Takes the userID number and returns all of their freqflier statuses
 router.get("/frequentFlier/:customerID", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
@@ -304,6 +322,8 @@ router.get("/frequentFlier/:customerID", (request, response) => {
 });
 
 // Give a rating to an Airline (Create Rating entry)
+// Takes a JSON object formatted
+// {"airline_name": String,"rating": INT (max 5)}
 router.post("/ratings", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
@@ -322,7 +342,8 @@ router.post("/ratings", (request, response) => {
   });
 });
 
-// Get average rating of an Airline
+// Get average rating of an Airline. Returns the average of all ratings for that airline to 1 decimal place
+// Takes the airline name as a JSON object {"airline_name": String}
 router.get("/ratings", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
@@ -342,6 +363,8 @@ router.get("/ratings", (request, response) => {
 });
 
 // "Book" (create) a reservation
+// Takes a JSON object formatted 
+// {"flightNumID": INT,"customerID" : INT,"seat_number": String,"luggage": INT}
 router.post("/reservation", (request, response) => {
   var conn = generateConnection();
   conn.connect((err) => {
@@ -361,9 +384,121 @@ router.post("/reservation", (request, response) => {
 });
 
 // "cancel" (delete) a reservation
+// Takes the reservation number as part of the URL path and will delete that reservation
+router.delete("/reservation/:reservation_number", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    conn.query("DELETE FROM flightbooking.reservation WHERE reservation_number = ?", [request.params.reservation_number], (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
 
 // See all reservations of a user
+// Takes the userID as part of the URL path and returns all of that users reservations
+router.get("/reservation/:userID", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    conn.query("SELECT r.reservation_number, f.airline, f.flightNumber, f.route, f.departure_date, f.departure_time, r.seat_number, r.luggage FROM flightbooking.reservation AS r INNER JOIN flightbooking.flight AS f ON r.flightNumID = f.flightnumID WHERE r.customerID = ?", [request.params.userID], (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
 
-// See all reservations of a flight
+// See all reservations of a flight Admin Functionality
+// Send the flightnumID as part of the URL path and get all reservations registered for that flight
+router.get("/flightreservation/:flightNumID", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    conn.query("SELECT r.reservation_number, u.name, f.airline, f.flightNumber, f.route, f.departure_date, f.departure_time, r.seat_number, r.luggage FROM flightbooking.reservation AS r INNER JOIN flightbooking.flight AS f ON r.flightNumID = f.flightnumID INNER JOIN flightbooking.users AS u ON r.customerID = u.userID WHERE r.flightNumID = ?", [request.params.flightNumID], (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
+// Create new Admin Account. Admin Functionality
+// This route takes a JSON object that includes the Admin information in the following format
+// {name:String,username:String,password:String}
+router.post("/admin", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    const parameters = request.body;
+    conn.query("INSERT INTO `flightbooking`.`admin` SET ?", parameters, (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
+
+// Delete Admin Account. Admin Functionality
+// send to admin/adminID and that admin will be romoved from the database
+router.delete("/admin/:adminID", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    conn.query("DELETE FROM flightbooking.admin WHERE adminID = ?", [request.params.adminID], (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
+// Get all Admin accounts. Admin Functionality
+// Just query the route with no body get the information back
+router.get("/admin", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    conn.query("SELECT * FROM flightbooking.admin", (err, data) => {
+      if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
 
 module.exports = router;
