@@ -40,8 +40,6 @@ services:
       - MYSQL_USER
       - MYSQL_PASSWORD
       - MYSQL_DATABASE
-    ports:
-      - "3306:3306"
     networks:
       - internal
     healthcheck:
