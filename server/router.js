@@ -59,7 +59,7 @@ function validateToken(request, response){
   }
 }
 
-router.post("/user/genToken", (request, response) => {
+router.post("/users/genToken", (request, response) => {
   var conn = generateConnection();
 
   conn.connect((err) => {
