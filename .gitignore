@@ -6,5 +6,8 @@ node_modules/
 
 # System Files
 .DS_Store
+
+# development stuff
 secrets/
 .env
+dev_*

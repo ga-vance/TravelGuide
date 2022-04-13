@@ -4,7 +4,7 @@
   "description": "The CPSC471 final project between e-seng and ga-vance at the University of Calgary",
   "main": "index.js",
   "scripts": {
-    "test": "ROOT=./public node index.js",
+    "test": "ROOT=./public nodemon index.js",
     "start": "ROOT=/var/www/html node index.js"
   },
   "repository": {
@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/ga-vance/CPSC471FinalProject/issues"
   },
-  "homepage": "https://github.com/ga-vance/CPSC471FinalProject#readme"
+  "homepage": "https://github.com/ga-vance/CPSC471FinalProject#readme",
+  "dependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
