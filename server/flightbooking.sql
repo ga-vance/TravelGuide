@@ -28,7 +28,7 @@ CREATE TABLE `admin` (
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`adminID`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -57,7 +57,7 @@ CREATE TABLE `aircraft` (
   PRIMARY KEY (`aircraftID`),
   KEY `owned_by_idx` (`owned_by`),
   CONSTRAINT `owned_by` FOREIGN KEY (`owned_by`) REFERENCES `airline` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=16;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -85,7 +85,7 @@ CREATE TABLE `airline` (
   PRIMARY KEY (`name`),
   KEY `hq_airport_idx` (`hq_airport`),
   CONSTRAINT `hq_airport` FOREIGN KEY (`hq_airport`) REFERENCES `airport` (`airportCode`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -110,7 +110,7 @@ CREATE TABLE `airlineRatings` (
   `rating` int NOT NULL,
   KEY `airline_name_idx` (`airline_name`),
   CONSTRAINT `airline_name` FOREIGN KEY (`airline_name`) REFERENCES `airline` (`name`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -136,7 +136,7 @@ CREATE TABLE `airport` (
   `country` varchar(255) DEFAULT NULL,
   `city` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`airportCode`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -173,7 +173,7 @@ CREATE TABLE `flight` (
   CONSTRAINT `aircraft` FOREIGN KEY (`aircraft`) REFERENCES `aircraft` (`aircraftID`),
   CONSTRAINT `airline` FOREIGN KEY (`airline`) REFERENCES `airline` (`name`),
   CONSTRAINT `route` FOREIGN KEY (`route`) REFERENCES `route` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,7 +198,7 @@ CREATE TABLE `frequentFlier` (
   `airline` varchar(255) NOT NULL,
   `tier` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`customerID`,`airline`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -229,7 +229,7 @@ CREATE TABLE `reservation` (
   KEY `customerID_idx` (`customerID`),
   CONSTRAINT `customerID` FOREIGN KEY (`customerID`) REFERENCES `users` (`userID`),
   CONSTRAINT `flightnumber` FOREIGN KEY (`flightNumber`) REFERENCES `flight` (`flightnumID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -254,7 +254,7 @@ CREATE TABLE `restrictions` (
   `severity` int DEFAULT NULL,
   `Description` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -286,7 +286,7 @@ CREATE TABLE `route` (
   CONSTRAINT `destination` FOREIGN KEY (`destination`) REFERENCES `airport` (`airportCode`),
   CONSTRAINT `origin` FOREIGN KEY (`origin`) REFERENCES `airport` (`airportCode`),
   CONSTRAINT `restriction` FOREIGN KEY (`restriction`) REFERENCES `restrictions` (`type`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -315,7 +315,7 @@ CREATE TABLE `users` (
   `creditcardExpiry` varchar(255) NOT NULL,
   PRIMARY KEY (`userID`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
