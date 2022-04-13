@@ -9,6 +9,7 @@ exec("mysql --user=$MYSQL_USER --password=$MYSQL_PASSWORD -h cpsc471_database fl
 const router = require("./router.js");
 
 const app = express();
+app.use(express.json());
 // connect routes, defined in router.js, to appliation
 app.use("/", router);
 

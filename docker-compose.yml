@@ -24,6 +24,7 @@ services:
       - MYSQL_PASSWORD
       - MYSQL_DATABASE
       - MYSQL_HOST
+      - JWT_SECRET_KEY
     networks:
       - internal
     depends_on:

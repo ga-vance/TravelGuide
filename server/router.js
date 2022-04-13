@@ -1,4 +1,5 @@
 const mysql = require('mysql');
+const jwt = require("jsonwebtoken");
 
 const express = require('express');
 var router = express.Router();
@@ -37,6 +38,42 @@ function sendError(response, error){
 
 router.get("/", (request, response) => {
   response.send("seems to be working fine!");
+});
+
+router.post("/user/genToken", (request, response) => {
+  var conn = generateConnection();
+
+  conn.connect((err) => {
+    if(err){
+      sendError(response, err);
+      return;
+    }
+
+    if(!request.body){
+      sendError(response, {message: "empty request body"});
+      return;
+    }
+
+    const {user, pass} = request.body;
+    conn.query("SELECT userId, username FROM flightbooking.users WHERE username = ? AND password = ?",
+      [user, pass],
+      (err, data) => {
+        if(err){
+          sendError(response, err);
+          return;
+        }
+
+        if(data.length == 0){
+          sendError(response, {message: "Username or password does not match"});
+          return;
+        }
+
+        const {userId, username} = data[0];
+        const token = jwt.sign({userId, username}, process.env.JWT_SECRET_KEY);
+
+        sendData(response, {token});
+      });
+  });
 });
 
 router.get("/test", (request, response) => {
