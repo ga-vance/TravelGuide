@@ -12,8 +12,9 @@ async function f(){
     tokenData = JSON.parse(atob(token.split('.')[1]));
   }catch(err){
     // token is malformed, go to login page
-    console.error("[error] malformed token");
-    window.location.href = "/login.html";
+    console.error("[error] missing or malformed token");
+    window.location.replace("/login.html");
+    return;
   }
   var userId = tokenData.userId;
   var userInfo = await fetch(`${apiOrigin}/users/${userId}`, {
@@ -23,7 +24,7 @@ async function f(){
     },
   }).then((res) => {return res.json();});
 
-  if(userInfo.failed){
+  if(userInfo.failed || userInfo.data.length == 0){
     console.error("[error] cannot access user panel");
     console.error(userInfo.message);
     window.location.href = "/login.html";
@@ -35,6 +36,8 @@ async function f(){
     window.location.replace("/admin-panel.html");
     return;
   }
+
+  console.log(userInfo);
 }
 
 window.addEventListener("load", () => {f()})

@@ -73,6 +73,7 @@ router.post("/users/genToken", (request, response) => {
       return;
     }
 
+    var dataSent = false;
     const {user, pass} = request.body;
     conn.query("SELECT userId, username FROM flightbooking.users WHERE username = ? AND password = ?",
       [user, pass],
@@ -95,6 +96,7 @@ router.post("/users/genToken", (request, response) => {
         }, process.env.JWT_SECRET_KEY);
 
         sendData(response, {token});
+        dataSent = true;
     });
 
     conn.query("SELECT adminId, username FROM flightbooking.admin WHERE username = ? AND password = ?",
@@ -106,7 +108,7 @@ router.post("/users/genToken", (request, response) => {
         }
 
         if(data.length == 0){
-          sendError(response, {message: "Username or password does not match"});
+          // this means that the user is not an administator, may be a customer
           return;
         }
 
@@ -119,7 +121,13 @@ router.post("/users/genToken", (request, response) => {
         }, process.env.JWT_SECRET_KEY);
 
         sendData(response, {token});
+        dataSent = true;
     });
+
+    setTimeout(() => {
+      if(!dataSent)
+          sendError(response, {message: "Username or password does not match"});
+    }, 1000); // wait 1 second to see if the token has been sent
   });
 });
 
