@@ -11,11 +11,6 @@ const sql_host = process.env.MYSQL_HOST || "cpsc471_database";
 const sql_user = process.env.MYSQL_USER || "root";
 const sql_pass = process.env.MYSQL_PASSWORD || "111111";
 
-// // Greg's development credentials
-// const sql_host = "localhost";
-// const sql_user = "root";
-// const sql_pass = "password";
-
 function generateConnection(){
   // connect to the database within network
   var conn = mysql.createConnection({
