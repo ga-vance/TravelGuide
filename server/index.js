@@ -6,6 +6,7 @@ const port = process.env.PORT || 3000;
 const router = require("./router.js");
 
 const app = express();
+app.use(express.json());
 // connect routes, defined in router.js, to appliation
 app.use("/", router);
 
