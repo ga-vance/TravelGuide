@@ -600,7 +600,7 @@ router.get("/routes", (request, response) => {
       sendError(response, err);
       return;
     }
-    conn.query("SELECT origin, destination FROM flightbooking.route", (err, data) => {
+    conn.query("SELECT r.origin, origin.city AS originCity, r.destination, destination.city AS destinationCity FROM flightbooking.route AS r JOIN flightbooking.airport AS origin ON origin.airportCode = r.origin JOIN flightbooking.airport AS destination ON destination.airportCode = r.destination", (err, data) => {
       if(err){
         sendError(response, err);
         return;

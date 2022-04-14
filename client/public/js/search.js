@@ -6,7 +6,7 @@
 
 async function f(){
   const apiOrigin = `http://${window.location.hostname}:3000`
-  var possibleOrigins = [], possibleDestinations = [];
+  var possibleOrigins = {}, possibleDestinations = {};
 
   function displayFlights(flightList){
     // clear container
@@ -67,9 +67,9 @@ async function f(){
     }
 
     itemContainer.replaceChildren();
-    for(var item of autofillItems){
+    for(var item of Object.keys(autofillItems)){
       // ensure autocomplete values follow existing input
-      if(input.value.toUpperCase() !== item.substr(0, input.value.length)) continue
+      if(input.value.toUpperCase() !== item.substr(0, input.value.length).toUpperCase()) continue
 
       let autoItem = document.createElement("div");
       autoItem.classList.add("autocomplete-item");
@@ -103,13 +103,31 @@ async function f(){
     document.querySelector("#search-bar").classList.remove("hidden");
   }
 
+  // get possible airport codes that can be selected from
+  var routeJson = await fetch(`${apiOrigin}/routes`).then((res) => res.json());
+
+  var routeData = routeJson.data;
+  for(var route of routeData){
+    possibleOrigins[route.originCity] = route.origin;
+    possibleDestinations[route.destinationCity] = route.destination;
+  }
+
   let travelForm = document.querySelector("#search-bar");
 
   // if query exists, populate search menus with it
   if(!!window.location.search){
     var urlParams = new URLSearchParams(window.location.search);
-    travelForm.origin.value = urlParams.get("origin");
-    travelForm.destination.value = urlParams.get("destination");
+    // get city names
+    for(var originName of Object.keys(possibleOrigins)){
+      if(possibleOrigins[originName] !== urlParams.get("origin")) continue;
+      travelForm.origin.value = originName;
+    }
+
+    for(var destinationName of Object.keys(possibleDestinations)){
+      if(possibleDestinations[destinationName] !== urlParams.get("destination")) continue;
+      travelForm.destination.value = destinationName;
+    }
+
     travelForm["depart-date"].value = urlParams.get("depart-date");
     performSearch(urlParams.get("origin"), urlParams.get("destination"), urlParams.get("depart-date"));
   }
@@ -128,24 +146,18 @@ async function f(){
       }
     }
 
-    let origin = travelForm.origin.value;
-    let destination = travelForm.destination.value;
+    let originName = travelForm.origin.value;
+    let destinationName = travelForm.destination.value;
     let destTime = travelForm["depart-date"].value;
+
+    // get the airport codes
+    let origin = possibleOrigins[originName];
+    let destination = possibleOrigins[destinationName];
+
     let url = `/search.html?origin=${origin}&destination=${destination}&depart-date=${destTime}`;
     history.pushState({}, "", url);
     performSearch(origin, destination, destTime);
   });
-
-  // get possible airport codes that can be selected from
-  var routeJson = await fetch(`${apiOrigin}/routes`).then((res) => res.json());
-
-  var routeData = routeJson.data;
-  for(var route of routeData){
-    if(!possibleOrigins.includes(route.origin))
-      possibleOrigins.push(route.origin);
-    if(!possibleDestinations.includes(route.destination))
-      possibleDestinations.push(route.destination);
-  }
 
   // handle autocomplete stuff
   var originInput = document.querySelector("input[name='origin']");
