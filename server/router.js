@@ -39,26 +39,20 @@ function sendError(response, error){
   });
 }
 
-function validateToken(request, response){
-  try {
+function validateToken(request){
+  try{
     var token = request.header("Authorization").split(' ').slice(-1)[0];
     var tokenString = new Buffer.from(token.split(' ').slice(-1)[0].split('.')[1], 'base64').toString('ascii')
     var tokenId = JSON.parse(tokenString).userId;
-    console.log(typeof tokenId);
-    try{
-      if(jwt.verify(token, process.env.JWT_SECRET_KEY)){
-        return tokenId;
-      }
-      return null;
-    }catch (err){
-      return null;
+    if(jwt.verify(token, process.env.JWT_SECRET_KEY)){
+      return tokenId;
     }
-  } catch (err) {
+  }catch (err){
     return null;
   }
 }
 
-router.post("/user/genToken", (request, response) => {
+router.post("/users/genToken", (request, response) => {
   var conn = generateConnection();
 
   conn.connect((err) => {
@@ -72,6 +66,7 @@ router.post("/user/genToken", (request, response) => {
       return;
     }
 
+    var dataSent = false;
     const {user, pass} = request.body;
     conn.query("SELECT userId, username FROM flightbooking.users WHERE username = ? AND password = ?",
       [user, pass],
@@ -82,15 +77,50 @@ router.post("/user/genToken", (request, response) => {
         }
 
         if(data.length == 0){
-          sendError(response, {message: "Username or password does not match"});
+          // this means that the user is likely not a customer, may be an admin
           return;
         }
 
         const {userId, username} = data[0];
-        const token = jwt.sign({userId, username}, process.env.JWT_SECRET_KEY);
+        const token = jwt.sign({
+          userId,
+          username,
+          isAdmin: false,
+        }, process.env.JWT_SECRET_KEY);
 
         sendData(response, {token});
-      });
+        dataSent = true;
+    });
+
+    conn.query("SELECT adminId, username FROM flightbooking.admin WHERE username = ? AND password = ?",
+      [user, pass],
+      (err, data) => {
+        if(err){
+          sendError(response, err);
+          return;
+        }
+
+        if(data.length == 0){
+          // this means that the user is not an administator, may be a customer
+          return;
+        }
+
+        const {adminId, username} = data[0];
+        console.log(data[0]);
+        const token = jwt.sign({
+          userId: adminId,
+          username,
+          isAdmin: true,
+        }, process.env.JWT_SECRET_KEY);
+
+        sendData(response, {token});
+        dataSent = true;
+    });
+
+    setTimeout(() => {
+      if(!dataSent)
+          sendError(response, {message: "Username or password does not match"});
+    }, 1000); // wait 1 second to see if the token has been sent
   });
 });
 
@@ -229,7 +259,7 @@ router.get("/flights", (request, response) => {
       sendError(response, err);
       return;
     }
-    const { origin, destination, departure_date } = request.body;
+    const { origin, destination, departure_date } = request.query;
     conn.query("SELECT f.flightnumID, f.airline, f.flightNumber, r.origin, f.departure_date, f.departure_time, r.destination, f.arrival_date, f.arrival_time FROM flightbooking.flight AS f INNER JOIN flightbooking.route AS r ON r.name = f.route WHERE r.origin = ? AND r.destination = ? and f.departure_date = ? ORDER BY f.departure_time", [origin, destination, departure_date], (err, data) => {
       if (err) {
         sendError(response, err);
@@ -548,6 +578,25 @@ router.put("/admin/:adminID", (request, response) => {
     const parameters = request.body;
     conn.query("UPDATE `flightbooking`.`admin` SET ? WHERE adminID = ?", [parameters, request.params.adminID], (err, data) => {
       if (err) {
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
+// Get all routes within the database
+// Just query the route with no body to get the information back
+router.get("/routes", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if(err){
+      sendError(response, err);
+      return;
+    }
+    conn.query("SELECT origin, destination FROM flightbooking.route", (err, data) => {
+      if(err){
         sendError(response, err);
         return;
       }

@@ -102,6 +102,9 @@ function onRequest(request, response){
         case("/js/search.js"):
         case("/js/home.js"):
         case("/js/user-panel.js"):
+        case("/js/admin-panel.js"):
+        case("/js/login.js"):
+        case("/js/signup.js"):
           getJS(urlInfo.pathname, response);
           break;
         default:

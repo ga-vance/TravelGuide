@@ -14,14 +14,18 @@
     <script defer src="/js/search.js"></script>
     <div id="navbar">
       <a href="/"><h1 class="title">Travel Guide</h1></a>
-      <form id="search-bar" class="hidden">
-        <div class="search-component">
+      <form id="search-bar" autocomplete="off" class="hidden">
+        <div class="search-component" id="origin-container">
           <label for="origin">From&nbsp;🛫</label>
-          <input type="text" name="origin" placeholder="Where do you want to fly from?" />
+          <div class="autocomplete">
+            <input type="text" name="origin" placeholder="Where do you want to fly from?" />
+          </div>
         </div>
-        <div class="search-component">
+        <div class="search-component" id="destination-container">
           <label for="destination">To&nbsp;🛬</label>
-          <input type="text" name="destination" placeholder="Where do you want to go?" />
+          <div class="autocomplete">
+            <input type="text" name="destination" placeholder="Where do you want to go?" />
+          </div>
         </div>
         <div class="search-component">
           <label for="depart-date">📅</label>
@@ -30,7 +34,7 @@
         </div>
       </form>
       <h1 id="search-icon">🔎</h1>
-      <h1>👤</h1>
+      <a href="/user-panel.html"><h1>👤</h1></a>
     </div>
     <div id="main">
       <div class="flight-result">
