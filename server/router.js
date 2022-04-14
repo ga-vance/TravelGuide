@@ -351,7 +351,7 @@ router.get("/ratings", (request, response) => {
       sendError(response, err);
       return;
     }
-    const { airline_name } = request.body;
+    const { airline_name } = request.query;
     conn.query("SELECT airline_name, ROUND(AVG(rating),1) 'rating' FROM flightbooking.airlineRatings WHERE airline_name = ? GROUP BY airline_name", airline_name, (err, data) => {
       if (err) {
         sendError(response, err);
