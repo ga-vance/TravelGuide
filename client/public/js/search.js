@@ -4,7 +4,7 @@
  * for Travel Guide online application
  */
 
-async function f(){
+async function search(){
   const apiOrigin = `http://${window.location.hostname}:3000`
   var possibleOrigins = {}, possibleDestinations = {};
 
@@ -194,4 +194,4 @@ async function f(){
   });
 }
 
-window.addEventListener("load", () => {f()});
+window.addEventListener("load", () => {search()});

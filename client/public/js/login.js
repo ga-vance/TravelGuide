@@ -1,7 +1,7 @@
 /**
  * login.js
  */
-function f(){
+function login(){
   const apiOrigin = `http://${window.location.hostname}:3000`
 
   function onLogin(resJson){
@@ -33,4 +33,4 @@ function f(){
   });
 }
 
-window.addEventListener("load", () => {f()});
+window.addEventListener("load", () => {login()});

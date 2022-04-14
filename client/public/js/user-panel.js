@@ -2,7 +2,7 @@
  * user-panel.js
  */
 
-async function f(){
+async function user(){
   const apiOrigin = `http://${window.location.hostname}:3000`
 
   // specify the element to log out
@@ -55,4 +55,4 @@ async function f(){
   updateAccount["credit-expire"].value = userInfo.creditcardExpiry;
 }
 
-window.addEventListener("load", () => {f()})
+window.addEventListener("load", () => {user()})

@@ -2,9 +2,9 @@
  * home.js
  */
 
-function f(){
+function home(){
   document.querySelector("#search-bar").classList.remove("hidden");
   document.querySelector("#search-icon").classList.add("disabled");
 }
 
-window.addEventListener("load", () => {f()});
+window.addEventListener("load", () => {home()});
