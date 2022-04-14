@@ -85,7 +85,7 @@ body *{
 #search-bar{
   margin-left: auto;
   height: 3rem;
-  width: 50vw;
+  width: min-content;
   display: flex;
   flex-direction: row;
   gap: 1rem;
