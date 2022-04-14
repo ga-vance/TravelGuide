@@ -1,0 +1,29 @@
+#flight-path{
+  margin: 0 10vw;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: auto;
+  place-items: center;
+}
+
+#flight-path > h1{
+  width: 100%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#flight-path > h1::before,
+#flight-path > h1::after{
+  content: "";
+  width: 100%;
+  height: 0;
+  border: dotted 1px var(--container-outline);
+}
+
+.path-marker{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
