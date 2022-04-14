@@ -246,7 +246,7 @@ router.get("/flights", (request, response) => {
       sendError(response, err);
       return;
     }
-    const { origin, destination, departure_date } = request.body;
+    const { origin, destination, departure_date } = request.query;
     conn.query("SELECT f.flightnumID, f.airline, f.flightNumber, r.origin, f.departure_date, f.departure_time, r.destination, f.arrival_date, f.arrival_time FROM flightbooking.flight AS f INNER JOIN flightbooking.route AS r ON r.name = f.route WHERE r.origin = ? AND r.destination = ? and f.departure_date = ? ORDER BY f.departure_time", [origin, destination, departure_date], (err, data) => {
       if (err) {
         sendError(response, err);

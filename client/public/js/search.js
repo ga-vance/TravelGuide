@@ -23,9 +23,9 @@ function f(){
       var headerelement = document.createElement("h2");
       headerelement.innerText = "Departure";
       var airportCode = document.createElement("p");
-      airportCode.innerText = flight["route"]["origin"]; // this value may change
+      airportCode.innerText = flight["origin"]; // this value may change
       var datetime = document.createElement("i");
-      datetime.innerText = flight["departure_datetime"];
+      datetime.innerText = `${flight["departure_date"].substr(0, 10)} ${flight["departure_time"]}`;
 
       destDiv.appendChild(header);
       destDiv.appendChild(airportCode);
@@ -43,9 +43,9 @@ function f(){
       var header = document.createElement("h2");
       header.innerText = "Arrival";
       var airportCode = document.createElement("p");
-      airportCode.innerText = flight["route"]["destination"]; // this value may change
+      airportCode.innerText = flight["destination"]; // this value may change
       var datetime = document.createElement("i");
-      datetime.innerText = flight["arrival_datetime"];
+      datetime.innerText = `${flight["arrival_date"].substr(0,10)} ${flight["arrival_time"]}`;
       arrivalDiv.appendChild(header);
       arrivalDiv.appendChild(airportCode);
       arrivalDiv.appendChild(datetime);
@@ -57,21 +57,14 @@ function f(){
 
   window["displayFlights"] = displayFlights;
 
-  function performSearch(origin, destination, destTime){
-    fetch(`${apiOrigin}/flight`, {
+  async function performSearch(origin, destination, destTime){
+    var query = `departure_date=${destTime}&origin=${origin}&destination=${destination}`;
+    var searchData = await fetch(`${apiOrigin}/flights?${query}`, {
       method: "GET",
-      body: JSON.stringify({
-        DepartureDate: destTime,
-        Origin: origin,
-        Destination: destination,
-      }),
-    });
-  }
+    }).then((res) => res.json());
 
-  // test possible cross-origin stuff:
-  fetch(`http://${window.location.hostname}:3000/test`, {method: "GET"})
-  .then((res) => res.json())
-  .then(console.log);
+    displayFlights(searchData.data);
+  }
 
   // if mobile, allow for search menu toggling
   if(window.innerWidth < 800){
@@ -91,6 +84,7 @@ function f(){
     travelForm.origin.value = urlParams.get("origin");
     travelForm.destination.value = urlParams.get("destination");
     travelForm["depart-date"].value = urlParams.get("depart-date");
+    performSearch(urlParams.get("origin"), urlParams.get("destination"), urlParams.get("depart-date"));
   }
 
   travelForm.addEventListener("submit", (evt) => {
@@ -99,8 +93,8 @@ function f(){
     let destination = travelForm.destination.value;
     let destTime = travelForm["depart-date"].value;
     let url = `/search.html?origin=${origin}&destination=${destination}&depart-date=${destTime}`;
-    console.log(url);
     history.pushState({}, "", url);
+    performSearch(origin, destination, destTime);
   });
 }
 
