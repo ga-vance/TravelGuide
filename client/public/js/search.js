@@ -129,7 +129,8 @@ async function f(){
     }
 
     travelForm["depart-date"].value = urlParams.get("depart-date");
-    performSearch(urlParams.get("origin"), urlParams.get("destination"), urlParams.get("depart-date"));
+    if(window.location.pathname === "/search.html")
+      performSearch(urlParams.get("origin"), urlParams.get("destination"), urlParams.get("depart-date"));
   }
 
   travelForm.addEventListener("submit", (evt) => {
