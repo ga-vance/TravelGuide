@@ -4,6 +4,13 @@
 
 async function f(){
   const apiOrigin = `http://${window.location.hostname}:3000`
+
+  // specify the element to log out
+  document.querySelector("#logout").addEventListener("click", () => {
+    localStorage.removeItem("sesstoken");
+    window.location.href = "/";
+  });
+
   // fetch current user information and populate page with that data
   // get userID from token
   var token = localStorage.getItem("sesstoken");

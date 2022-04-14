@@ -1,3 +1,11 @@
+#logout{
+  margin: auto;
+}
+
+#logout:hover{
+  cursor: pointer;
+}
+
 #main{
   height: 100%;
   display: grid;
