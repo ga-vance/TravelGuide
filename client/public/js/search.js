@@ -140,11 +140,12 @@ async function search(){
     if(window.location.pathname === "/" || window.location.pathname === "/index.html"){
       document.querySelector("#navbar").classList.remove("home");
       document.querySelector("#plane-bg").classList.add("search");
+    }
 
-      if(window.innerWidth < 800){
-        document.querySelector("#search-icon").classList.remove("disabled");
-        document.querySelector("#search-bar").classList.add("hidden");
-      }
+    // if using mobile device
+    if(window.innerWidth < 800){
+      document.querySelector("#search-icon").classList.remove("disabled");
+      document.querySelector("#search-bar").classList.add("hidden");
     }
 
     let originName = travelForm.origin.value;
