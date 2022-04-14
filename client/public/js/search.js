@@ -4,8 +4,9 @@
  * for Travel Guide online application
  */
 
-function f(){
+async function f(){
   const apiOrigin = `http://${window.location.hostname}:3000`
+  var possibleOrigins = [], possibleDestinations = [];
 
   function displayFlights(flightList){
     // clear container
@@ -55,7 +56,33 @@ function f(){
     }
   }
 
-  window["displayFlights"] = displayFlights;
+  function handleAutocomplete(input, autofillItems){
+    var parentContainer = document.querySelector(`#${input.name}-container .autocomplete`);
+    var itemContainer = parentContainer.querySelector(".autocomplete-items");
+
+    if(itemContainer === null){ // container not present
+      itemContainer = document.createElement("div");
+      itemContainer.classList.add("autocomplete-items");
+      parentContainer.appendChild(itemContainer);
+    }
+
+    itemContainer.replaceChildren();
+    for(var item of autofillItems){
+      // ensure autocomplete values follow existing input
+      if(input.value.toUpperCase() !== item.substr(0, input.value.length)) continue
+
+      let autoItem = document.createElement("div");
+      autoItem.classList.add("autocomplete-item");
+      autoItem.innerText = item;
+      autoItem.addEventListener("click", () => {
+        console.log("clicked", autoItem.innerText);
+        input.value = autoItem.innerText;
+        autoItem.parentElement.parentElement.removeChild(autoItem.parentElement);
+      });
+
+      itemContainer.appendChild(autoItem);
+    }
+  }
 
   async function performSearch(origin, destination, destTime){
     var query = `departure_date=${destTime}&origin=${origin}&destination=${destination}`;
@@ -95,6 +122,50 @@ function f(){
     let url = `/search.html?origin=${origin}&destination=${destination}&depart-date=${destTime}`;
     history.pushState({}, "", url);
     performSearch(origin, destination, destTime);
+  });
+
+  // get possible airport codes that can be selected from
+  var routeJson = await fetch(`${apiOrigin}/routes`).then((res) => res.json());
+
+  var routeData = routeJson.data;
+  for(var route of routeData){
+    if(!possibleOrigins.includes(route.origin))
+      possibleOrigins.push(route.origin);
+    if(!possibleDestinations.includes(route.destination))
+      possibleDestinations.push(route.destination);
+  }
+
+  // handle autocomplete stuff
+  var originInput = document.querySelector("input[name='origin']");
+  originInput.addEventListener("focus", () => {
+    handleAutocomplete(originInput, possibleOrigins);
+  });
+  originInput.addEventListener("keyup", () => {
+    handleAutocomplete(originInput, possibleOrigins);
+  });
+
+  var destInput = document.querySelector("input[name='destination']");
+  destInput.addEventListener("focus", () => {
+    handleAutocomplete(destInput, possibleDestinations);
+  });
+  destInput.addEventListener("keyup", () => {
+    handleAutocomplete(destInput, possibleDestinations);
+  });
+
+  var originContainer = document.querySelector("#origin-container");
+  var destContainer = document.querySelector("#destination-container");
+
+  window.addEventListener("click", (evt) => {
+    var parentElement = evt.target.closest(".search-component");
+    if(!parentElement || parentElement.id !== "origin-container"){
+      var autofillContainer = originContainer.querySelector(".autocomplete-items");
+      if(!!autofillContainer) autofillContainer.parentElement.removeChild(autofillContainer);
+    }
+
+    if(!parentElement || parentElement.id !== "destination-container"){
+      var autofillContainer = destContainer.querySelector(".autocomplete-items");
+      if(!!autofillContainer) autofillContainer.parentElement.removeChild(autofillContainer);
+    }
   });
 }
 

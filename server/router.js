@@ -557,4 +557,23 @@ router.put("/admin/:adminID", (request, response) => {
   });
 });
 
+// Get all routes within the database
+// Just query the route with no body to get the information back
+router.get("/routes", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if(err){
+      sendError(response, err);
+      return;
+    }
+    conn.query("SELECT origin, destination FROM flightbooking.route", (err, data) => {
+      if(err){
+        sendError(response, err);
+        return;
+      }
+      sendData(response, data);
+    });
+  });
+});
+
 module.exports = router;
