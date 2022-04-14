@@ -1,0 +1,54 @@
+#main.flight{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-items: center;
+}
+
+#flight-path{
+  margin: 0 10vw;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  width: calc(100% - 10vw);
+  place-items: center;
+  grid-column: 1/-1;
+}
+
+#flight-path > h1{
+  width: 100%;
+  display:flex;
+  justify-content: center;
+  align-items: center;
+}
+
+#flight-path > h1::before,
+#flight-path > h1::after{
+  content: "";
+  width: 100%;
+  height: 0;
+  border: dotted 1px var(--container-outline);
+}
+
+.path-marker{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+#reserve-section{
+  grid-row: 2;
+  grid-column: 2;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#details{
+  display: grid;
+  gap: 1rem;
+}
+
+#admin-control{
+  grid-column: 1/-1;
+}

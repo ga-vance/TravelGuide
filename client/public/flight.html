@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta lang="en" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/search.css" />
+    <link rel="stylesheet" href="/css/flight.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,700;1,200&display=swap" rel="stylesheet">
+  </head>
+  <body>
+    <script defer src="/js/search.js"></script>
+    <script defer src="/js/flight.js"></script>
+    <div id="navbar">
+      <a href="/"><h1 class="title">Travel Guide</h1></a>
+      <form id="search-bar" autocomplete="off" class="hidden">
+        <div class="search-component" id="origin-container">
+          <label for="origin">From&nbsp;🛫</label>
+          <div class="autocomplete">
+            <input type="text" name="origin" placeholder="Where do you want to fly from?" />
+          </div>
+        </div>
+        <div class="search-component" id="destination-container">
+          <label for="destination">To&nbsp;🛬</label>
+          <div class="autocomplete">
+            <input type="text" name="destination" placeholder="Where do you want to go?" />
+          </div>
+        </div>
+        <div class="search-component">
+          <label for="depart-date">📅</label>
+          <input type="date" name="depart-date" />
+          <input type="submit" value="➜" />
+        </div>
+      </form>
+      <h1 id="search-icon">🔎</h1>
+      <a href="/user-panel.html"><h1>👤</h1></a>
+    </div>
+    <div id="main" class="flight">
+      <div id="flight-path">
+        <div class="path-marker" id="origin">
+          <h1 class="marker-name">City, Country</h1>
+          <h3 class="maker-code">ORG</h3>
+          <i id="depart-time">Departs @ HH:mm:ss</i>
+          <h1>📍</h1>
+        </div>
+        <h1>✈️</h1>
+        <div class="path-marker" id="origin">
+          <h1 class="marker-name">City, Country</h1>
+          <h3 class="maker-code">DST</h3>
+          <i id="arrive-time">Arrives @ HH:mm:ss</i>
+          <h1>📍</h1>
+        </div>
+      </div>
+      <div id="details">
+        <div id="flight-info">
+          <h2>Flight Details:</h2>
+          <p id="company-name">Managed by: Company</p>
+          <p id="freq-fligher">Frequent Flyer: ✔️</p>
+          <i id="flight-number">F1GH7N0</i>
+        </div>
+        <div id="restriction-info">
+          <h2>Flight Restrictions:</h2>
+          <p>No restrictions recorded for this flight</p>
+        </div>
+        <div id="aircraft-info">
+          <h2>Aircraft Details:</h2>
+          <p id="aircraft-number">Flying in: Aircraft Model Number</p>
+          <p id="aircraft-ownership">Aircraft owned by: Company</p>
+        </div>
+        <div id="airline-ratings">
+          <div id="rating-stars"></div>
+        </div>
+      </div>
+      <form id="reserve-section">
+        <h2>Reserve your seat:</h2>
+        <label for="seat">Where would you like to sit?</label>
+        <select name="seat">
+          <optgroup label="Economy">
+            <option value="econ-front">Economy Front</option>
+            <option value="econ-mid">Economy Center</option>
+            <option value="econ-back">Economy Back</option>
+          </optgroup>
+          <optgroup label="Business">
+            <option value="busi-front">Business Front</option>
+            <option value="busi-mid">Business Center</option>
+            <option value="busi-back">Business Back</option>
+          </optgroup>
+        </select>
+        <label for="luggage">Bringing any luggage?</label>
+        <select name="luggage">
+          <option value="0">Carry-On Only</option>
+          <option value="1">Carry-On + 1 Luggage</option>
+          <option value="2">Carry-On + 2 Luggage</option>
+        </select>
+        <button>Reserve a seat!</button>
+      </form>
+      <div id="admin-control">
+        <h3>Admin Danger Zone</h3>
+        <button>Delete Flight?</button>
+      </div>
+    </div>
+  </body>
+</html>

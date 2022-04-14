@@ -2,7 +2,7 @@
  * admin-panel.js
  */
 
-function f(){
+function admin(){
   const apiOrigin = `http://${window.location.hostname}:3000`;
 
   // specify the element to log out
@@ -12,4 +12,4 @@ function f(){
   });
 }
 
-window.addEventListener("load", () => {f()});
+window.addEventListener("load", () => {admin()});

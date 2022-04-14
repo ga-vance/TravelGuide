@@ -86,6 +86,7 @@ function onRequest(request, response){
       switch(urlInfo.pathname){
         case("/"):
         case("/index.html"):
+        case("/flight.html"):
         case("/login.html"):
         case("/signup.html"):
         case("/search.html"):
@@ -97,6 +98,7 @@ function onRequest(request, response){
         case("/css/search.css"):
         case("/css/admin-panel.css"):
         case("/css/user-panel.css"):
+        case("/css/flight.css"):
           getCSS(urlInfo.pathname, response);
           break;
         case("/js/search.js"):
@@ -105,6 +107,7 @@ function onRequest(request, response){
         case("/js/admin-panel.js"):
         case("/js/login.js"):
         case("/js/signup.js"):
+        case("/js/flight.js"):
           getJS(urlInfo.pathname, response);
           break;
         default:

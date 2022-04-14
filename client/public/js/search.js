@@ -4,17 +4,18 @@
  * for Travel Guide online application
  */
 
-async function f(){
+async function search(){
   const apiOrigin = `http://${window.location.hostname}:3000`
-  var possibleOrigins = [], possibleDestinations = [];
+  var possibleOrigins = {}, possibleDestinations = {};
 
   function displayFlights(flightList){
     // clear container
     document.querySelector("#main").replaceChildren();
 
     for(flight of flightList){
-      var flightResult = document.createElement("div");
+      var flightResult = document.createElement("a");
       flightResult.classList.add("flight-result");
+      flightResult.href = `/flight.html?${urlParams}&flightId=${flight.flightnumID}`;
 
       // display departure info
       var destDiv = document.createElement("div");
@@ -67,9 +68,9 @@ async function f(){
     }
 
     itemContainer.replaceChildren();
-    for(var item of autofillItems){
+    for(var item of Object.keys(autofillItems)){
       // ensure autocomplete values follow existing input
-      if(input.value.toUpperCase() !== item.substr(0, input.value.length)) continue
+      if(input.value.toUpperCase() !== item.substr(0, input.value.length).toUpperCase()) continue
 
       let autoItem = document.createElement("div");
       autoItem.classList.add("autocomplete-item");
@@ -103,37 +104,66 @@ async function f(){
     document.querySelector("#search-bar").classList.remove("hidden");
   }
 
-  let travelForm = document.querySelector("#search-bar");
-
-  // if query exists, populate search menus with it
-  if(!!window.location.search){
-    var urlParams = new URLSearchParams(window.location.search);
-    travelForm.origin.value = urlParams.get("origin");
-    travelForm.destination.value = urlParams.get("destination");
-    travelForm["depart-date"].value = urlParams.get("depart-date");
-    performSearch(urlParams.get("origin"), urlParams.get("destination"), urlParams.get("depart-date"));
-  }
-
-  travelForm.addEventListener("submit", (evt) => {
-    evt.preventDefault();
-    let origin = travelForm.origin.value;
-    let destination = travelForm.destination.value;
-    let destTime = travelForm["depart-date"].value;
-    let url = `/search.html?origin=${origin}&destination=${destination}&depart-date=${destTime}`;
-    history.pushState({}, "", url);
-    performSearch(origin, destination, destTime);
-  });
-
   // get possible airport codes that can be selected from
   var routeJson = await fetch(`${apiOrigin}/routes`).then((res) => res.json());
 
   var routeData = routeJson.data;
   for(var route of routeData){
-    if(!possibleOrigins.includes(route.origin))
-      possibleOrigins.push(route.origin);
-    if(!possibleDestinations.includes(route.destination))
-      possibleDestinations.push(route.destination);
+    possibleOrigins[route.originCity] = route.origin;
+    possibleDestinations[route.destinationCity] = route.destination;
   }
+
+  let travelForm = document.querySelector("#search-bar");
+
+  // if query exists, populate search menus with it
+  if(!!window.location.search){
+    var urlParams = new URLSearchParams(window.location.search);
+    // get city names
+    for(var originName of Object.keys(possibleOrigins)){
+      if(possibleOrigins[originName] !== urlParams.get("origin")) continue;
+      travelForm.origin.value = originName;
+    }
+
+    for(var destinationName of Object.keys(possibleDestinations)){
+      if(possibleDestinations[destinationName] !== urlParams.get("destination")) continue;
+      travelForm.destination.value = destinationName;
+    }
+
+    travelForm["depart-date"].value = urlParams.get("depart-date");
+    if(window.location.pathname === "/search.html")
+      performSearch(urlParams.get("origin"), urlParams.get("destination"), urlParams.get("depart-date"));
+  }
+
+  travelForm.addEventListener("submit", (evt) => {
+    evt.preventDefault();
+
+    // remove "flight" class from main if necessary
+    document.querySelector("#main").classList.remove("flight");
+
+    // if on homepage
+    if(window.location.pathname === "/" || window.location.pathname === "/index.html"){
+      document.querySelector("#navbar").classList.remove("home");
+      document.querySelector("#plane-bg").classList.add("search");
+    }
+
+    // if using mobile device
+    if(window.innerWidth < 800){
+      document.querySelector("#search-icon").classList.remove("disabled");
+      document.querySelector("#search-bar").classList.add("hidden");
+    }
+
+    let originName = travelForm.origin.value;
+    let destinationName = travelForm.destination.value;
+    let destTime = travelForm["depart-date"].value;
+
+    // get the airport codes
+    let origin = possibleOrigins[originName];
+    let destination = possibleOrigins[destinationName];
+
+    let url = `/search.html?origin=${origin}&destination=${destination}&depart-date=${destTime}`;
+    history.pushState({}, "", url);
+    performSearch(origin, destination, destTime);
+  });
 
   // handle autocomplete stuff
   var originInput = document.querySelector("input[name='origin']");
@@ -169,4 +199,4 @@ async function f(){
   });
 }
 
-window.addEventListener("load", () => {f()});
+window.addEventListener("load", () => {search()});
