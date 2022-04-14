@@ -13,8 +13,9 @@ async function search(){
     document.querySelector("#main").replaceChildren();
 
     for(flight of flightList){
-      var flightResult = document.createElement("div");
+      var flightResult = document.createElement("a");
       flightResult.classList.add("flight-result");
+      flightResult.href = `/flight.html?${urlParams}&flightId=${flight.flightnumID}`;
 
       // display departure info
       var destDiv = document.createElement("div");
