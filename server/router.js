@@ -39,7 +39,7 @@ function sendError(response, error){
   });
 }
 
-function validateToken(request, response){
+function validateToken(request){
   var token = request.header("Authorization").split(' ').slice(-1)[0];
   var tokenString = new Buffer.from(token.split(' ').slice(-1)[0].split('.')[1], 'base64').toString('ascii')
   var tokenId = JSON.parse(tokenString).userId;
