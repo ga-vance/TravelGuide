@@ -43,16 +43,63 @@
         <div class="path-marker" id="origin">
           <h1 class="marker-name">City, Country</h1>
           <h3 class="maker-code">ORG</h3>
-          <i>Origin</i>
+          <i id="depart-time">Departs @ HH:mm:ss</i>
           <h1>📍</h1>
         </div>
         <h1>✈️</h1>
         <div class="path-marker" id="origin">
           <h1 class="marker-name">City, Country</h1>
           <h3 class="maker-code">DST</h3>
-          <i>Destination</i>
+          <i id="arrive-time">Arrives @ HH:mm:ss</i>
           <h1>📍</h1>
         </div>
+      </div>
+      <div id="details">
+        <div id="flight-info">
+          <h2>Flight Details:</h2>
+          <p id="company-name">Managed by: Company</p>
+          <p id="freq-fligher">Frequent Flyer: ✔️</p>
+          <i id="flight-number">F1GH7N0</i>
+        </div>
+        <div id="restriction-info">
+          <h2>Flight Restrictions:</h2>
+          <p>No restrictions recorded for this flight</p>
+        </div>
+        <div id="aircraft-info">
+          <h2>Aircraft Details:</h2>
+          <p id="aircraft-number">Flying in: Aircraft Model Number</p>
+          <p id="aircraft-ownership">Aircraft owned by: Company</p>
+        </div>
+        <div id="airline-ratings">
+          <div id="rating-stars"></div>
+        </div>
+      </div>
+      <form id="reserve-section">
+        <h2>Reserve your seat:</h2>
+        <label for="seat">Where would you like to sit?</label>
+        <select name="seat">
+          <optgroup label="Economy">
+            <option value="econ-front">Economy Front</option>
+            <option value="econ-mid">Economy Center</option>
+            <option value="econ-back">Economy Back</option>
+          </optgroup>
+          <optgroup label="Business">
+            <option value="busi-front">Business Front</option>
+            <option value="busi-mid">Business Center</option>
+            <option value="busi-back">Business Back</option>
+          </optgroup>
+        </select>
+        <label for="luggage">Bringing any luggage?</label>
+        <select name="luggage">
+          <option value="0">Carry-On Only</option>
+          <option value="1">Carry-On + 1 Luggage</option>
+          <option value="2">Carry-On + 2 Luggage</option>
+        </select>
+        <button>Reserve a seat!</button>
+      </form>
+      <div id="admin-control">
+        <h3>Admin Danger Zone</h3>
+        <button>Delete Flight?</button>
       </div>
     </div>
   </body>

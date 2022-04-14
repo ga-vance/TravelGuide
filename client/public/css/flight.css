@@ -1,9 +1,16 @@
+#main.flight{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-items: center;
+}
+
 #flight-path{
   margin: 0 10vw;
   display: grid;
   grid-template-columns: auto 1fr auto;
-  gap: auto;
+  width: calc(100% - 10vw);
   place-items: center;
+  grid-column: 1/-1;
 }
 
 #flight-path > h1{
@@ -26,4 +33,22 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
+}
+
+#reserve-section{
+  grid-row: 2;
+  grid-column: 2;
+
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+#details{
+  display: grid;
+  gap: 1rem;
+}
+
+#admin-control{
+  grid-column: 1/-1;
 }

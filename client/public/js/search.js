@@ -137,6 +137,9 @@ async function search(){
   travelForm.addEventListener("submit", (evt) => {
     evt.preventDefault();
 
+    // remove "flight" class from main if necessary
+    document.querySelector("#main").classList.remove("flight");
+
     // if on homepage
     if(window.location.pathname === "/" || window.location.pathname === "/index.html"){
       document.querySelector("#navbar").classList.remove("home");
