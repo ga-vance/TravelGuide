@@ -569,6 +569,11 @@ router.get("/admin", (request, response) => {
 // Takes a JSON object
 // formatted {name:String,username:String,password:String}
 router.put("/admin/:adminID", (request, response) => {
+  const token = validateToken(request);
+  if (token != request.params.adminID) {
+    response.sendStatus(403);
+    return;
+  }
   var conn = generateConnection();
   conn.connect((err) => {
     if (err) {
