@@ -40,16 +40,20 @@ function sendError(response, error){
 }
 
 function validateToken(request, response){
-  var token = request.header("Authorization").split(' ').slice(-1)[0];
-  var tokenString = new Buffer.from(token.split(' ').slice(-1)[0].split('.')[1], 'base64').toString('ascii')
-  var tokenId = JSON.parse(tokenString).userId;
-  console.log(typeof tokenId);
-  try{
-    if(jwt.verify(token, process.env.JWT_SECRET_KEY)){
-      return tokenId;
+  try {
+    var token = request.header("Authorization").split(' ').slice(-1)[0];
+    var tokenString = new Buffer.from(token.split(' ').slice(-1)[0].split('.')[1], 'base64').toString('ascii')
+    var tokenId = JSON.parse(tokenString).userId;
+    console.log(typeof tokenId);
+    try{
+      if(jwt.verify(token, process.env.JWT_SECRET_KEY)){
+        return tokenId;
+      }
+      return null;
+    }catch (err){
+      return null;
     }
-    return null;
-  }catch (err){
+  } catch (err) {
     return null;
   }
 }
@@ -121,6 +125,11 @@ router.get("/users", (request, response) => {
 // Get a specific user from the database
 // Query the route/userID to get that users information back
 router.get("/users/:userID", (request, response) => {
+  const token = validateToken(request);
+  if (token != request.params.userID) {
+    response.sendStatus(403);
+    return;
+  }
   var conn = generateConnection();
   conn.connect((err) => {
     if (err) {
@@ -161,6 +170,11 @@ router.post("/users", (request, response) => {
 // Delete a user account from the database
 // send to users/userID and that user will be romoved from the database
 router.delete("/users/:userID", (request, response) => {
+  const token = validateToken(request);
+  if (token != request.params.userID) {
+    response.sendStatus(403);
+    return;
+  }
   var conn = generateConnection();
   conn.connect((err) => {
     if (err) {
@@ -180,9 +194,14 @@ router.delete("/users/:userID", (request, response) => {
 // Update user information
 // This takes a JSON object with all of the same information to create a new user
 // {username:String,name:String,password:String,creditcardnumber:String,creditcardExpiry:String(dd/dd)}
-// Even if not all the information is being changed, all of the information needs to be send including information
+// Even if not all the information is being changed, all of the information needs to be sent including information
 // that hasn't changed
 router.put("/users/:userID", (request, response) => {
+  const token = validateToken(request);
+  if (token != request.params.userID) {
+    response.sendStatus(403);
+    return;
+  }
   var conn = generateConnection();
   conn.connect((err) => {
     if (err) {
@@ -286,6 +305,12 @@ router.put("/flights/:flightnumID", (request, response) => {
 // Takes a JSON object formatted
 // {"customerID" : INT,"airline": String,"tier": STRING}
 router.post("/frequentFlier", (request, response) => {
+  const token = validateToken(request);
+  const { customerID, airline, tier } = request.body;
+  if (token != customerID) {
+    response.sendStatus(403);
+    return;
+  } 
   var conn = generateConnection();
   conn.connect((err) => {
     if (err) {
@@ -305,6 +330,11 @@ router.post("/frequentFlier", (request, response) => {
 
 // Get frequent flier statuses of a customer Takes the userID number and returns all of their freqflier statuses
 router.get("/frequentFlier/:customerID", (request, response) => {
+  const token = validateToken(request);
+  if (token != request.params.customerID) {
+    response.sendStatus(403);
+    return;
+  }
   var conn = generateConnection();
   conn.connect((err) => {
     if (err) {
@@ -351,7 +381,7 @@ router.get("/ratings", (request, response) => {
       sendError(response, err);
       return;
     }
-    const { airline_name } = request.body;
+    const { airline_name } = request.query;
     conn.query("SELECT airline_name, ROUND(AVG(rating),1) 'rating' FROM flightbooking.airlineRatings WHERE airline_name = ? GROUP BY airline_name", airline_name, (err, data) => {
       if (err) {
         sendError(response, err);
@@ -405,6 +435,11 @@ router.delete("/reservation/:reservation_number", (request, response) => {
 // See all reservations of a user
 // Takes the userID as part of the URL path and returns all of that users reservations
 router.get("/reservation/:userID", (request, response) => {
+  const token = validateToken(request);
+  if (token != request.params.userID) {
+    response.sendStatus(403);
+    return;
+  }
   var conn = generateConnection();
   conn.connect((err) => {
     if (err) {
