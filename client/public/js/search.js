@@ -116,6 +116,18 @@ async function f(){
 
   travelForm.addEventListener("submit", (evt) => {
     evt.preventDefault();
+
+    // if on homepage
+    if(window.location.pathname === "/" || window.location.pathname === "/index.html"){
+      document.querySelector("#navbar").classList.remove("home");
+      document.querySelector("#plane-bg").classList.add("search");
+
+      if(window.innerWidth < 800){
+        document.querySelector("#search-icon").classList.remove("disabled");
+        document.querySelector("#search-bar").classList.add("hidden");
+      }
+    }
+
     let origin = travelForm.origin.value;
     let destination = travelForm.destination.value;
     let destTime = travelForm["depart-date"].value;

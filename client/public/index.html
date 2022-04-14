@@ -5,23 +5,29 @@
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <meta charset="utf-8" />
     <link rel="stylesheet" href="/css/styles.css" />
+    <link rel="stylesheet" href="/css/search.css" />
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,300;0,700;1,200&display=swap" rel="stylesheet">
   </head>
   <body>
     <script defer src="/js/home.js"></script>
+    <script defer src="/js/search.js"></script>
     <div id="plane-bg"><h1>✈️</h1></div>
     <div id="navbar" class="home">
       <a href="/"><h1 class="title">Travel Guide</h1></a>
       <form id="search-bar" class="hidden">
-        <div class="search-component">
+        <div class="search-component" id="origin-container">
           <label for="origin">From&nbsp;🛫</label>
-          <input type="text" name="origin" placeholder="Where do you want to fly from?" />
+          <div class="autocomplete">
+            <input type="text" name="origin" placeholder="Where do you want to fly from?" />
+          </div>
         </div>
-        <div class="search-component">
+        <div class="search-component" id="destination-container">
           <label for="destination">To&nbsp;🛬</label>
-          <input type="text" name="destination" placeholder="Where do you want to go?" />
+          <div class="autocomplete">
+            <input type="text" name="destination" placeholder="Where do you want to go?" />
+          </div>
         </div>
         <div class="search-component">
           <label for="depart-date">📅</label>
