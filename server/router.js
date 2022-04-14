@@ -270,6 +270,32 @@ router.get("/flights", (request, response) => {
   });
 });
 
+// Get a flight based off its flight num id
+router.get("/flights/:flightnumID", (request, response) => {
+  var conn = generateConnection();
+  conn.connect((err) => {
+    if(err){
+      sendError(response, err);
+      return;
+    }
+    const {flightnumID} = request.params;
+    conn.query("SELECT f.flightnumID, f.flightNumber, f.departure_date, f.departure_time, f.arrival_date, f.arrival_time, f.airline, route.name, route.restriction, aircraft.model_number, aircraft.owned_by, origin.city, origin.country, origin.airportCode, destination.city, destination.country, destination.airportCode FROM flightbooking.flight AS f JOIN flightbooking.route AS route ON route.name = f.route JOIN flightbooking.aircraft AS aircraft ON aircraft.aircraftID = f.aircraft JOIN flightbooking.airport AS origin ON route.origin = origin.airportCode JOIN flightbooking.airport AS destination ON route.destination = destination.airportCode WHERE f.flightnumID = ?",
+      [flightnumID],
+      (err, data) => {
+        if(err){
+          sendError(response, err);
+          return;
+        }
+
+        if(data.length > 1){
+          console.warn("[warning] flight query returned more than one flight... is flightnumID unique?");
+        }
+
+        sendData(response, data);
+    });
+  });
+})
+
 // Add a new flight to the database  Admin Functionality
 // Takes a JSON object formatted
 // {"airline": String,"flightNumber": String,"route": String,"departure_date": Date (YYYY-MM-DD),"departure_time": TIME (HH:MM:ss (24HR)),"arrival_date": Date (YYYY-MM-DD),"arrival_time": TIME (HH:MM:ss (24HR)),"aircraft": INT}
