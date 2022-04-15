@@ -25,7 +25,7 @@ async function admin(){
       var adminName = document.createElement("p");
       adminName.innerText = admin.name;
       var adminId = document.createElement("i");
-      adminId.innerText = `User No. ${admin.adminID}`;
+      adminId.innerText = `Admin No. ${admin.adminID}`;
       
       adminDetails.appendChild(adminName);
       adminDetails.appendChild(adminId);
@@ -125,6 +125,34 @@ async function admin(){
     }
   }
 
+  function displayUsers(userList){
+    var userContainer = document.querySelector("#list-users");
+    userContainer.replaceChildren();
+
+    var header = document.createElement("h1");
+    header.innerText = "Manager Users";
+
+    userContainer.appendChild(header);
+
+    for(var user of userList){
+      var userElement = document.createElement("div");
+      var image = document.createElement("h1");
+      image.innerText = "👤";
+      userElement.appendChild(image);
+
+      var userDetails = document.createElement("div");
+      userDetails.classList.add("user-details");
+
+      var name = document.createElement("p");
+      name.innerText = user.name;
+      var userNumber = document.createElement("i");
+      userNumber.innerText(`User No. ${user.userID}`);
+
+      userDetails.appendChild(innerText);
+      userDetails.appendChild(userNumber);
+    }
+  }
+
   var token = localStorage.getItem("sesstoken");
   var tokenData;
 
@@ -203,15 +231,6 @@ async function admin(){
     button.value = true;
   });
 
-  /**
-   * LAX-YYC | LAX    | YYC         | Passport    |
-   * | YEG-YYC | YEG    | YYC         | NULL        |
-   * | YYC-LAX | YYC    | LAX         | Passport    |
-   * | YYC-YEG | YYC    | YEG         | NULL        |
-   * | YYC-YYZ | YYC    | YYZ         | NULL        |
-   * | YYZ-YYC
-   */
-
   // get all route names
   var routeData = await fetch(`${apiOrigin}/routes`).then(res => res.json());
 
@@ -227,6 +246,8 @@ async function admin(){
     }
   }
 
+  // fetch all users
+  var userData = await fetch(`${apiOrigin}/users`).then(res => res.json());
   // allow for flight creation
   document.querySelector("#add-flight").addEventListener("submit",  async (evt) => {
     evt.preventDefault();

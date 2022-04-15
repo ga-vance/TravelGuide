@@ -64,13 +64,18 @@ async function user(){
     return;
   }
 
-  if(tokenData.isAdmin){
+  var userId = tokenData.userId;
+
+  if(tokenData.isAdmin && window.location.search.indexOf("view") > 0){
+    // admin is viewing user account
+    var urlParams = new URLSearchParams(window.location.search);
+    userId = urlParams.get("view"); 
+  }else if(tokenData.isAdmin){
     // account is actually administrative, go to admin panel
     window.location.replace("/admin-panel.html");
     return;
   }
 
-  var userId = tokenData.userId;
   var userJson = await fetch(`${apiOrigin}/users/${userId}`, {
     method: "GET",
     headers: {
