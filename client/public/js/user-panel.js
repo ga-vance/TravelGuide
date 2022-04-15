@@ -169,6 +169,34 @@ async function user(){
   document.querySelector("input[value='Delete Account']").addEventListener("click", (evt) => {
     evt.preventDefault();
   });
+
+  // allow for frequent flier status creation
+  document.querySelector("#update-freq-flyers").addEventListener("submit", async (evt) => {
+    evt.preventDefault();
+    var form = evt.target;
+
+    var airline = form.airline.value;
+    var tier = form.tier.value;
+
+    var stats = await fetch(`${apiOrigin}/frequentFlier`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({customerID: userId, airline, tier}),
+    }).then(res => res.json());
+
+    var button = form.querySelector("input[type='submit']");
+    if(stats.failed){
+      console.error("[error] failed to add to frequent flier list");
+      console.error(stats.message);
+      button.innerText = "Failed: Try Again?";
+      return;
+    }
+
+    window.location.reload(false);
+  });
 }
 
 window.addEventListener("load", () => {user()})
