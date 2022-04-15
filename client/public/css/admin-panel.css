@@ -15,12 +15,6 @@
   margin: 1rem 2rem;
 }
 
-@media screen and (max-width: 800px){
-  #main{
-    grid-template-columns: 1fr;
-  }
-}
-
 .admin-pane{
   border: solid 2px var(--container-outline);
   height: 100%;
@@ -58,10 +52,26 @@
   justify-content: center;
   border: solid 2px var(--text-box);
   border-radius: 1rem;
+  place-items: center;
 }
 
 .admin-account{
   display: flex;
   gap: 0.5rem;
   align-items: center;
+}
+
+@media screen and (max-width: 800px){
+  #main{
+    grid-template-columns: 1fr;
+  }
+
+  .user,
+  .admin{
+    grid-template-columns: 1fr;
+  }
+
+  .admin-account{
+    flex-direction: column;
+  }
 }
