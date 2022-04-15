@@ -33,7 +33,7 @@ async function user(){
 
   if(userJson.failed || userJson.data.length == 0){
     console.error("[error] cannot access user panel");
-    console.error(userInfo.message);
+    console.error(userJson.message || "[error] blank statement");
     window.location.href = "/login.html";
     return;
   }
