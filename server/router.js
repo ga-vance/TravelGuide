@@ -400,7 +400,7 @@ router.get("/reservation/:userID", (request, response) => {
     return;
   }
   var conn = generateConnection();
-  conn.query("SELECT r.reservation_number, f.airline, f.flightNumber, f.route, f.departure_date, f.departure_time, r.seat_number, r.luggage FROM flightbooking.reservation AS r INNER JOIN flightbooking.flight AS f ON r.flightNumber = f.flightnumID WHERE r.customerID = ?", [request.params.userID], (err, data) => {
+  conn.query("SELECT r.reservation_number, f.airline, f.flightNumber, f.route, f.departure_date, f.departure_time, r.seat_number, r.luggage FROM flightbooking.reservation AS r INNER JOIN flightbooking.flight AS f ON r.flightNumID = f.flightnumID WHERE r.customerID = ?", [request.params.userID], (err, data) => {
     if (err) {
       sendError(response, err);
       return;
