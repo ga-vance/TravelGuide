@@ -36,13 +36,15 @@
   justify-content: center;
 }
 
-#list-users{
+#list-users,
+#list-admin{
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.user{
+.user,
+.admin{
   display: grid;
   grid-template-columns: 2rem 1fr auto;
   padding: 1rem;
