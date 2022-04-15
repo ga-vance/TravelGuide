@@ -67,6 +67,98 @@ async function flight(){
   if(flightData.restriction !== null){
     /// TODO: query restrictions
   }
+
+  // create reservations as necesssary
+  var reserveForm = document.querySelector("#reserve-section");
+  reserveForm.addEventListener("submit", async (evt) => {
+    evt.preventDefault();
+    var luggage = reserveForm.luggage.value;
+    var flightNumber = flightId;
+    var customerID = tokenData.userId;
+
+    // generate a random seat
+    var seatNum, offset, range, seatLetters = "ABCDEF"
+    var seatLetter = seatLetters[Math.floor(Math.random() * seatLetters.length % seatLetters.length)];
+    switch(reserveForm.seat.value){
+      case("econ-front"):
+        offset = 18;
+        range = 10;
+        seatNum = offset + Math.floor(Math.random() * range % range);
+        break;
+      case("econ-mid"):
+        offset = 28;
+        range = 10;
+        seatNum = offset + Math.floor(Math.random() * range % range);
+        break;
+      case("econ-back"):
+        offset = 38;
+        range = 10;
+        seatNum = offset + Math.floor(Math.random() * range % range);
+        break;
+      case("busi-front"):
+        offset = 0;
+        range = 6;
+        seatNum = offset + Math.floor(Math.random() * range % range);
+        break;
+      case("busi-mid"):
+        offset = 6;
+        range = 6;
+        seatNum = offset + Math.floor(Math.random() * range % range);
+        break;
+      case("busi-back"):
+        offset = 12;
+        range = 6;
+        seatNum = offset + Math.floor(Math.random() * range % range);
+        break;
+    }
+
+    var seat_number = seatLetter + seatNum;
+
+    var stats = await fetch(`${apiOrigin}/reservation`, {
+      method: "POST",
+      body: JSON.stringify({flightNumber, customerID, seat_number, luggage}),
+      headers:{
+        "Content-Type": "application/json",
+      },
+    }).then(res => res.json());
+
+    var formButton = reserveForm.querySelector("button");
+
+    if(stats.failed){
+      console.error("[error] failed to reserve seat");
+      console.error(stats.message);
+      formButton.innerText = "Reservation failed... try again?";
+      return;
+    }
+
+    formButton.innerText = "You're booked! ✅";
+    formButton.disabled = true;
+  });
+
+  // remove admin panel if user is not an admin.
+  var adminPanel = document.querySelector("#admin-control");
+  if(!tokenData.isAdmin){
+    adminPanel.parentElement.removeChild(adminPanel);
+  }else{
+    // add button functionality to delete the flight
+    var deleteButton = adminPanel.querySelector("button");
+    deleteButton.addEventListener("click", async () => {
+      if(deleteButton.innerText === "Delete Flight?"){
+        deleteButton.innerText = "Confirm Deletion?";
+      }else if(deleteButton.innerText === "Confirm Deletion?"){
+        var stats = await fetch(`${apiOrigin}/flights/${flightId}`, {
+          method: "DELETE",
+        }).then(res => res.json());
+        if(!stats.failed){
+          window.location.href = "/admin-panel.html";
+          return;
+        }
+
+        console.error("[error] could not delete flight");
+        console.error(stats.message);
+      }
+    });
+  }
 }
 
 window.addEventListener("load", () => {flight()});
