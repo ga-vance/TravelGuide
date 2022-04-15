@@ -4,6 +4,17 @@
 
 async function flight(){
   const apiOrigin = `http://${window.location.hostname}:3000`
+
+  // check if user is logged in
+  var token = localStorage.getItem("sesstoken");
+  if(token === null){
+    console.error("[error] not logged in");
+    window.location.href = "/login.html";
+    return;
+  }
+
+  var tokenData = JSON.parse(atob(token.split('.')[1]));
+
   // fetch information about current flight
   var urlParams = new URLSearchParams(window.location.search);
   var flightId = urlParams.get("flightId");
@@ -37,7 +48,20 @@ async function flight(){
   document.querySelector("#aircraft-number").innerText = `Flying in: ${flightData.model_number}`;
   document.querySelector("#aircraft-ownership").innerText = `Aircraft owned by: ${flightData.owned_by}`;
   // Check to see if user frequently flies with this company
-  /// TODO: query frequent flyer
+  var userId = tokenData.userId;
+  fetch(`${apiOrigin}/frequentFlier/${userId}`, {
+    method: "GET",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then((res) => res.json())
+  .then((data) => {
+    for(var freqFlier of data.data){
+      if(freqFlier.airline !== flightData.airline) continue;
+      document.querySelector("#freq-flier").innerText = `Frequent Flier Status: ${freqFlier.tier}`;
+      return
+    }
+  });
 
   // Populate restriction information if there exists any
   if(flightData.restriction !== null){
