@@ -166,6 +166,7 @@ async function search(){
 
     let url = `/search.html?origin=${origin}&destination=${destination}&depart-date=${destTime}`;
     history.pushState({}, "", url);
+    urlParams = new URLSearchParams(window.location.search);
     performSearch(origin, destination, destTime);
   });
 
