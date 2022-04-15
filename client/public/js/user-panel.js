@@ -32,6 +32,24 @@ async function user(){
       var luggage = document.createElement("h3");
       luggage.innerText = `Luggage: 1 Carry-On, ${res.luggage || 0} Luggage`;
 
+      var yeet = document.createElement("button");
+      yeet.innerText = "🗑️";
+      yeet.addEventListener("click", async () => {
+        yeet.resNumber = res.reservation_number;
+        var stats = await fetch(`${apiOrigin}/reservation/${yeet.resNumber}`, {
+          method: "DELETE",
+        }).then(resp => resp.json());
+
+        if(stats.failed){
+          console.error("[error] failed to delete reservation");
+          yeet.innerText = "Failed, try again?";
+          return;
+        }
+
+        var e = yeet.parentElement;
+        e.parentElement.removeChild(e);
+      });
+
       resDetails.appendChild(reservationNumber);
       resDetails.appendChild(flightCode);
       resDetails.appendChild(flightLength);

@@ -80,6 +80,7 @@
   height: min-content;
   display: grid;
   grid-template-rows: auto 1fr;
+  grid-template-columns: 1fr auto;
   border: solid 2px var(--strong-accent);
   border-radius: 1rem;
   overflow-X: hidden;
@@ -90,8 +91,19 @@
   line-height: 200%;
   background-color: var(--strong-accent);
   padding-left: 1rem;
+  grid-column: 1/-1;
 }
 
 .reservation-details{
   padding: 1rem 2rem;
+}
+
+.yeet-reservation{
+  display: flex;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.yeet-reservation:hover{
+  cursor:pointer;
 }
