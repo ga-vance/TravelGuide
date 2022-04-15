@@ -70,7 +70,6 @@ async function user(){
     return;
   }
 
-  console.log(userInfo);
   var userId = tokenData.userId;
   var userJson = await fetch(`${apiOrigin}/users/${userId}`, {
     method: "GET",
@@ -107,6 +106,50 @@ async function user(){
   }else{
     showReservations(reserveStats.data);
   }
+
+  // allow for user info updates
+  document.querySelector("#update-account").addEventListener("submit", async (evt) => {
+    evt.preventDefault();
+    var form = evt.target;
+
+    // get user values to update
+    var name = form.name.value;
+    var username = form.username.value;
+
+    if(form.password.value !== form["confirm-password"].value){
+      console.log("[error] passwords do not match");
+      return;
+    }
+
+    var password = form.password.value !== "*********" ? userInfo.password : form.password.value;
+    var creditcardnumber = form["credit-number"].value.includes("*") ? userInfo.creditcardnumber : form["credit-number"].value;
+    var creditcardExpiry = form["credit-expire"].value;
+
+    var stats = await fetch(`${apiOrigin}/users/${userId}`, {
+      method: "PUT",
+      body: JSON.stringify({
+        name, username, password, creditcardnumber, creditcardExpiry,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      }, 
+    }).then(res => res.json());
+
+    if(stats.failed){
+      console.error("[error] failed to update user account");
+      console.error(stats.message);
+      document.querySelector("input[value='Update Account']").innerText = "Failed: Please Try Again"
+      return
+    }
+
+    window.location.reload(false);
+  })
+
+  // allow for account deletion
+  document.querySelector("input[value='Delete Account']").addEventListener("click", (evt) => {
+    evt.preventDefault();
+  });
 }
 
 window.addEventListener("load", () => {user()})
