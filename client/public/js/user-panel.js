@@ -23,8 +23,10 @@ async function user(){
 
       var reservationNumber = document.createElement("i");
       reservationNumber.innerText = `Reservation No. ${res.reservation_number}`;
-      var flightCode = document.createElement("h1");
+      var flightCode = document.createElement("h2");
       flightCode.innerText = `Flight: ${res.flightNumber}`;
+      var flightLength = document.createElement("p");
+      flightLength.innerText = `🛫: ${res.departure_date.substr(0,10)}@${res.departure_time}`;
       var seatNumber = document.createElement("h3");
       seatNumber.innerText = `Seat Number: ${res.seat_number}`;
       var luggage = document.createElement("h3");
@@ -32,6 +34,7 @@ async function user(){
 
       resDetails.appendChild(reservationNumber);
       resDetails.appendChild(flightCode);
+      resDetails.appendChild(flightLength);
       resDetails.appendChild(seatNumber);
       resDetails.appendChild(luggage);
 
