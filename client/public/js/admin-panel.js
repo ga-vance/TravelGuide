@@ -171,6 +171,37 @@ async function admin(){
   }else{
     displayAdmins(adminDetails.data);
   }
+
+  // allow for admin creation
+  document.querySelector("#create-admin").addEventListener("submit", async (evt) => {
+    evt.preventDefault();
+    var form = evt.target;
+    var name = form.name.value;
+    var username = form.username.value;
+    var password = form.password.value;
+
+    var stats = await fetch(`${apiOrigin}/admin`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body:JSON.stringify({
+        name, username, password
+      }),
+    }).then(res => res.json());
+
+    var button = form.querySelector("input[type='submit']");
+
+    if(stats.failed){
+      console.error("[error] failed to create admin");
+      console.error(stats.message);
+      button.value = "Failed: Try Again?";
+      return;
+    }
+
+    button.innerText = "Created Admin ✅";
+    button.value = true;
+  });
 }
 
 window.addEventListener("load", () => {admin()});
