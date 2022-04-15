@@ -496,4 +496,18 @@ router.get("/routes", (request, response) => {
   });
 });
 
+// Get all of the details of a specific restriction
+// Takes the restriction name(primary Key) as a query parameter
+router.get("/restrictions", (request, response) => {
+  var conn = generateConnection();
+  const { type } = request.query;
+  conn.query("SELECT * FROM flightbooking.restrictions WHERE type = ?", type, (err, data) => {
+    if (err) {
+      sendError(response, err);
+      return;
+    }
+    sendData(response, data);
+  });
+});
+
 module.exports = router;
