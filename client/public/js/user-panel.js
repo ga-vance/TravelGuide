@@ -166,8 +166,29 @@ async function user(){
   })
 
   // allow for account deletion
-  document.querySelector("input[value='Delete Account']").addEventListener("click", (evt) => {
+  document.querySelector("#del-account").addEventListener("click", async (evt) => {
     evt.preventDefault();
+
+    if(evt.target.value !== "Confirm Deletion?"){
+      evt.target.value = "Confirm Deletion?";
+      return;
+    }
+
+    var stats = await fetch(`${apiOrigin}/users/${userId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    }).then(res => res.json());
+
+    if(stats.failed){
+      console.error("[error] Failed to delete account");
+      console.error(stats.message);
+      evt.target.value = "Failed to delete: try again?";
+      return;
+    }
+
+    window.location.href = "/index.html";
   });
 
   // allow for frequent flier status creation
