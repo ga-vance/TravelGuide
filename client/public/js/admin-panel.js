@@ -134,8 +134,16 @@ async function admin(){
 
     userContainer.appendChild(header);
 
+    if(userList.length === 0){
+      var warning = document.createElement("h2");
+      warning.innerText = "No users present";
+      userContainer.appendChild(warning);
+      return;
+    }
+
     for(var user of userList){
       var userElement = document.createElement("div");
+      userElement.classList.add("user");
       var image = document.createElement("h1");
       image.innerText = "👤";
       userElement.appendChild(image);
@@ -146,10 +154,20 @@ async function admin(){
       var name = document.createElement("p");
       name.innerText = user.name;
       var userNumber = document.createElement("i");
-      userNumber.innerText(`User No. ${user.userID}`);
+      userNumber.innerText = `User No. ${user.userID}`;
 
-      userDetails.appendChild(innerText);
+      userDetails.appendChild(name);
       userDetails.appendChild(userNumber);
+
+      userElement.appendChild(userDetails);
+
+      var viewUser = document.createElement("a");
+      viewUser.href = `/user-panel.html?view=${user.userID}`;
+      viewUser.innerText = "View Account";
+
+      userElement.appendChild(viewUser);
+
+      userContainer.appendChild(userElement);
     }
   }
 
@@ -248,6 +266,15 @@ async function admin(){
 
   // fetch all users
   var userData = await fetch(`${apiOrigin}/users`).then(res => res.json());
+
+  if(userData.failed){
+    console.error("[error] Failed to get users");
+    console.error(userData.message);
+    document.querySelector("#list-users").innerText = "Failed to fetch users";
+  }else{
+    displayUsers(userData.data);
+  }
+
   // allow for flight creation
   document.querySelector("#add-flight").addEventListener("submit",  async (evt) => {
     evt.preventDefault();
