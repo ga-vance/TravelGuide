@@ -32,11 +32,17 @@ async function user(){
       var luggage = document.createElement("h3");
       luggage.innerText = `Luggage: 1 Carry-On, ${res.luggage || 0} Luggage`;
 
-      var yeet = document.createElement("button");
+      var yeet = document.createElement("h2");
+      yeet.classList.add("yeet-reservation");
       yeet.innerText = "🗑️";
-      yeet.addEventListener("click", async () => {
-        yeet.resNumber = res.reservation_number;
-        var stats = await fetch(`${apiOrigin}/reservation/${yeet.resNumber}`, {
+      yeet.addEventListener("click", async (evt) => {
+        if(evt.target.innerText !== "🗑️?"){
+          evt.target.innerText = "🗑️?";
+          return;
+        }
+
+        evt.target.resNumber = res.reservation_number;
+        var stats = await fetch(`${apiOrigin}/reservation/${evt.target.resNumber}`, {
           method: "DELETE",
         }).then(resp => resp.json());
 
@@ -46,7 +52,7 @@ async function user(){
           return;
         }
 
-        var e = yeet.parentElement;
+        var e = evt.target.parentElement;
         e.parentElement.removeChild(e);
       });
 
@@ -58,6 +64,8 @@ async function user(){
 
       reservation.appendChild(title);
       reservation.appendChild(resDetails);
+
+      reservation.appendChild(yeet);
 
       document.querySelector("#reservations").appendChild(reservation);
     }
