@@ -85,7 +85,6 @@ async function user(){
 
   var userInfo = userJson.data[0];
 
-  document.querySelector("#user-info > h1").innerText = userInfo.name;
   var updateAccount = document.querySelector("#update-account");
   updateAccount.name.value = userInfo.name;
   updateAccount.username.value = userInfo.username;

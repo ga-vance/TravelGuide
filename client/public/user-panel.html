@@ -33,24 +33,37 @@
       <a href="/user-panel.html"><h1>👤</h1></a>
     </div>
     <div id="main">
-      <img class="user-pane" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/322/bust-in-silhouette_1f464.png" />
       <div class="user-pane" id="user-info">
-        <h1>Tim Apple</h1>
-        <i>Next Flight: YYYY/mm/dd, hh:mm:ss&nbsp;p.m.</i>
-        <p>Frequently Flies With: KLM</p>
-      </div>
-      <div class="user-pane" id="reservations">
-        <div class="reservation">
-          <h1>Bording Pass</h1>
-          <div class="reservation-details">
-            <i>Reservation No. 123123</i>
-            <h2>Flight: A3117</h2>
-            <h3>Seat Number: A17</h3>
-            <h3>Luggage: 1 Carry-On, 1 Luggage</h3>
+        <form id="update-account">
+          <div>
+            <label for="name">Name:</label>
+            <input name="name" type="text" value="Tim Apple" placeholder="First Last" />
           </div>
-        </div>
-      </div>
-      <div class="user-pane" id="account-manage">
+          <div>
+            <label for="username">Username:</label>
+            <input name="username" type="text" value="timapple123" placeholder="Username" />
+          </div>
+          <div>
+            <label for="password">Password:</label>
+            <input name="password" type="password" value="*********" placeholder="Password" />
+          </div>
+          <div>
+            <label for="confirm-password">Confirm Password:</label>
+            <input name="confirm-password" type="password" value="*********" placeholder="Confirm Password" />
+          </div>
+          <div>
+            <label for="credit-card">Credit Card:</label>
+            <input name="credit-number" type="text" pattern="[\d*]{16}" placeholder="1234-5678-9012-1234" />
+          </div>
+          <div>
+            <label for="credit-card">Expiry:</label>
+            <input name="credit-expire" type="text" value="" placeholder="MM/YY" />
+          </div>
+          <div class="form-buttons">
+            <input type="submit" value="Update Account"/>
+            <input type="submit" value="Delete Account"/>
+          </div>
+        </form>
         <form id="update-freq-flyers">
           <label for="airline">Frequent Flyer Information:</label>
           <div>
@@ -84,36 +97,17 @@
           </div>
           <input type="submit" value="Update Frequent Flyer details" />
         </form>
-        <form id="update-account">
-          <div>
-            <label for="name">Name:</label>
-            <input name="name" type="text" value="Tim Apple" placeholder="First Last" />
+      </div>
+      <div class="user-pane" id="reservations">
+        <div class="reservation">
+          <h1>Bording Pass</h1>
+          <div class="reservation-details">
+            <i>Reservation No. 123123</i>
+            <h2>Flight: A3117</h2>
+            <h3>Seat Number: A17</h3>
+            <h3>Luggage: 1 Carry-On, 1 Luggage</h3>
           </div>
-          <div>
-            <label for="username">Username:</label>
-            <input name="username" type="text" value="timapple123" placeholder="Username" />
-          </div>
-          <div>
-            <label for="password">Password:</label>
-            <input name="password" type="password" value="*********" placeholder="Password" />
-          </div>
-          <div>
-            <label for="confirm-password">Confirm Password:</label>
-            <input name="confirm-password" type="password" value="*********" placeholder="Confirm Password" />
-          </div>
-          <div>
-            <label for="credit-card">Credit Card:</label>
-            <input name="credit-number" type="text" pattern="[\d*]{16}" placeholder="1234-5678-9012-1234" />
-          </div>
-          <div>
-            <label for="credit-card">Expiry:</label>
-            <input name="credit-expire" type="text" value="" placeholder="MM/YY" />
-          </div>
-          <div class="form-buttons">
-            <input type="submit" value="Update Account"/>
-            <input type="submit" value="Delete Account"/>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   </body>
