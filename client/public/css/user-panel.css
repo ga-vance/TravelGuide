@@ -51,6 +51,11 @@
   gap: 0.5rem;
 }
 
+#current-freq-fliers{
+  display: flex;
+  flex-direction: column;
+}
+
 #update-freq-flyers > div{
   display: flex;
 }

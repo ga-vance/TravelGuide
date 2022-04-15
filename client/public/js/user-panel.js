@@ -107,6 +107,25 @@ async function user(){
     showReservations(reserveStats.data);
   }
 
+  // get frequent flier information for user
+  var freqFlierInfo = await fetch(`${apiOrigin}/frequentFlier/${userId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  }).then(res => res.json());
+
+  if(freqFlierInfo.failed){
+    console.error("[error] failed to retrieve frequent flyer information for user");
+    console.error(reqFlierInfo.message);
+  }else{
+    document.querySelector("#current-freq-fliers").replaceChildren();
+    for(var freqFlier of freqFlierInfo.data){
+      var listItem = document.createElement("p");
+      listItem.innerText = `${freqFlier.airline} : ${freqFlier.tier}`;
+      document.querySelector("#current-freq-fliers").appendChild(listItem);
+    }
+  }
+
   // allow for user info updates
   document.querySelector("#update-account").addEventListener("submit", async (evt) => {
     evt.preventDefault();
