@@ -279,7 +279,7 @@ router.get("/flights/:flightnumID", (request, response) => {
       return;
     }
     const {flightnumID} = request.params;
-    conn.query("SELECT f.flightnumID, f.flightNumber, f.departure_date, f.departure_time, f.arrival_date, f.arrival_time, f.airline, route.name, route.restriction, aircraft.model_number, aircraft.owned_by, origin.city, origin.country, origin.airportCode, destination.city, destination.country, destination.airportCode FROM flightbooking.flight AS f JOIN flightbooking.route AS route ON route.name = f.route JOIN flightbooking.aircraft AS aircraft ON aircraft.aircraftID = f.aircraft JOIN flightbooking.airport AS origin ON route.origin = origin.airportCode JOIN flightbooking.airport AS destination ON route.destination = destination.airportCode WHERE f.flightnumID = ?",
+    conn.query("SELECT f.flightnumID, f.flightNumber, f.departure_date, f.departure_time, f.arrival_date, f.arrival_time, f.airline, route.name, route.restriction, aircraft.model_number, aircraft.owned_by, origin.city AS originCity, origin.country AS originCountry, origin.airportCode AS originCode, destination.city AS destinationCity, destination.country AS destinationCountry, destination.airportCode AS destinationCode FROM flightbooking.flight AS f JOIN flightbooking.route AS route ON route.name = f.route JOIN flightbooking.aircraft AS aircraft ON aircraft.aircraftID = f.aircraft JOIN flightbooking.airport AS origin ON route.origin = origin.airportCode JOIN flightbooking.airport AS destination ON route.destination = destination.airportCode WHERE f.flightnumID = ?",
       [flightnumID],
       (err, data) => {
         if(err){
