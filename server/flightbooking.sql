@@ -24,11 +24,12 @@ DROP TABLE IF EXISTS `admin`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `admin` (
   `adminID` int NOT NULL AUTO_INCREMENT,
+  `name` varchar(255) NOT NULL,
   `username` varchar(255) NOT NULL,
   `password` varchar(255) NOT NULL,
   PRIMARY KEY (`adminID`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=2;
+) ENGINE=InnoDB AUTO_INCREMENT=5;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -37,7 +38,7 @@ CREATE TABLE `admin` (
 
 LOCK TABLES `admin` WRITE;
 /*!40000 ALTER TABLE `admin` DISABLE KEYS */;
-INSERT INTO `admin` VALUES (1,'gvanceAdmin','password');
+INSERT INTO `admin` VALUES (1,'Greg Vance','gvanceAdmin','password'),(2,'Ethan Sengsavang','ESAdmin','password3');
 /*!40000 ALTER TABLE `admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -119,7 +120,7 @@ CREATE TABLE `airlineRatings` (
 
 LOCK TABLES `airlineRatings` WRITE;
 /*!40000 ALTER TABLE `airlineRatings` DISABLE KEYS */;
-INSERT INTO `airlineRatings` VALUES ('Air Canada',3),('Air Canada',2),('Air Canada',3),('Air Canada',4),('Air Canada',2),('Air Canada',2),('Air Canada',5),('Air Canada',1),('Air Canada',1),('Air Canada',4),('Air Canada',5),('Air Canada',5),('Air Canada',4),('Air Canada',4),('Air Canada',4),('Air Canada',4),('Air Canada',3),('Air Canada',3),('Air Canada',5),('Air Canada',5),('Air Canada',5),('Air Canada',5),('Air Canada',5),('Air Canada',5);
+INSERT INTO `airlineRatings` VALUES ('Air Canada',3),('Air Canada',2),('Air Canada',3),('Air Canada',4),('Air Canada',2),('Air Canada',2),('Air Canada',5),('Air Canada',1),('Air Canada',1),('Air Canada',4),('Air Canada',5),('Air Canada',5),('Air Canada',4),('Air Canada',4),('Air Canada',4),('Air Canada',4),('Air Canada',3),('Air Canada',3),('Air Canada',5),('Air Canada',5),('Air Canada',5),('Air Canada',5),('Air Canada',5),('Air Canada',5),('American Airlines',4);
 /*!40000 ALTER TABLE `airlineRatings` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -158,22 +159,22 @@ DROP TABLE IF EXISTS `flight`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `flight` (
   `flightnumID` int NOT NULL AUTO_INCREMENT,
+  `airline` varchar(255) NOT NULL,
   `flightNumber` varchar(255) NOT NULL,
+  `route` varchar(255) NOT NULL,
   `departure_date` date NOT NULL,
   `departure_time` time NOT NULL,
   `arrival_date` date DEFAULT NULL,
   `arrival_time` time DEFAULT NULL,
-  `airline` varchar(255) NOT NULL,
-  `route` varchar(255) NOT NULL,
   `aircraft` int NOT NULL,
   PRIMARY KEY (`flightnumID`,`flightNumber`,`departure_date`),
   KEY `airline_idx` (`airline`),
   KEY `route_idx` (`route`),
   KEY `aircraft_idx` (`aircraft`),
-  CONSTRAINT `aircraft` FOREIGN KEY (`aircraft`) REFERENCES `aircraft` (`aircraftID`),
-  CONSTRAINT `airline` FOREIGN KEY (`airline`) REFERENCES `airline` (`name`),
-  CONSTRAINT `route` FOREIGN KEY (`route`) REFERENCES `route` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=5;
+  CONSTRAINT `aircraft` FOREIGN KEY (`aircraft`) REFERENCES `aircraft` (`aircraftID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `airline` FOREIGN KEY (`airline`) REFERENCES `airline` (`name`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `route` FOREIGN KEY (`route`) REFERENCES `route` (`name`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=10;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -182,7 +183,7 @@ CREATE TABLE `flight` (
 
 LOCK TABLES `flight` WRITE;
 /*!40000 ALTER TABLE `flight` DISABLE KEYS */;
-INSERT INTO `flight` VALUES (1,'AC10','2022-05-25','15:00:00','2022-05-25','16:00:00','Air Canada','YYC-YEG',4),(2,'WJ210','2022-05-26','09:00:00','2022-05-26','10:00:00','WestJet','YEG-YYC',1),(3,'WJ220','2022-05-25','09:00:00','2022-05-25','10:10:00','WestJet','YYC-YEG',2),(4,'AA310','2022-05-16','23:15:00','2022-05-17','01:45:00','American Airlines','YYC-LAX',6);
+INSERT INTO `flight` VALUES (1,'Air Canada','AC10','YYC-YEG','2022-05-25','15:00:00','2022-05-25','16:00:00',4),(2,'WestJet','WJ210','YEG-YYC','2022-05-26','09:00:00','2022-05-26','10:00:00',1),(3,'WestJet','WJ220','YYC-YEG','2022-05-25','09:00:00','2022-05-25','10:10:00',2),(4,'American Airlines','AA310','YYC-LAX','2022-05-16','23:15:00','2022-05-17','01:45:00',6),(5,'American Airlines','AA870','LAX-YYC','2022-05-17','22:45:00','2022-05-18','02:40:00',8);
 /*!40000 ALTER TABLE `flight` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -197,7 +198,11 @@ CREATE TABLE `frequentFlier` (
   `customerID` int NOT NULL,
   `airline` varchar(255) NOT NULL,
   `tier` varchar(255) DEFAULT NULL,
-  PRIMARY KEY (`customerID`,`airline`)
+  PRIMARY KEY (`customerID`,`airline`),
+  KEY `airline_idx` (`airline`),
+  KEY `customerID_idx` (`customerID`),
+  CONSTRAINT `airlineName` FOREIGN KEY (`airline`) REFERENCES `airline` (`name`),
+  CONSTRAINT `user_id` FOREIGN KEY (`customerID`) REFERENCES `users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
@@ -207,7 +212,7 @@ CREATE TABLE `frequentFlier` (
 
 LOCK TABLES `frequentFlier` WRITE;
 /*!40000 ALTER TABLE `frequentFlier` DISABLE KEYS */;
-INSERT INTO `frequentFlier` VALUES (1,'Air Canada','Gold'),(1,'WestJet','Silver');
+INSERT INTO `frequentFlier` VALUES (1,'Air Canada','Gold'),(1,'WestJet','Silver'),(2,'WestJet','Silver');
 /*!40000 ALTER TABLE `frequentFlier` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -220,16 +225,16 @@ DROP TABLE IF EXISTS `reservation`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `reservation` (
   `reservation_number` int NOT NULL AUTO_INCREMENT,
-  `flightNumber` int NOT NULL,
+  `flightNumID` int NOT NULL,
   `customerID` int NOT NULL,
   `seat_number` varchar(255) DEFAULT NULL,
   `luggage` int DEFAULT NULL,
   PRIMARY KEY (`reservation_number`),
-  KEY `flightNumber_idx` (`flightNumber`),
+  KEY `flightNumber_idx` (`flightNumID`),
   KEY `customerID_idx` (`customerID`),
-  CONSTRAINT `customerID` FOREIGN KEY (`customerID`) REFERENCES `users` (`userID`),
-  CONSTRAINT `flightnumber` FOREIGN KEY (`flightNumber`) REFERENCES `flight` (`flightnumID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5;
+  CONSTRAINT `customerID` FOREIGN KEY (`customerID`) REFERENCES `users` (`userID`) ON DELETE CASCADE ON UPDATE CASCADE,
+  CONSTRAINT `flightNumID` FOREIGN KEY (`flightNumID`) REFERENCES `flight` (`flightnumID`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=10000;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -238,7 +243,7 @@ CREATE TABLE `reservation` (
 
 LOCK TABLES `reservation` WRITE;
 /*!40000 ALTER TABLE `reservation` DISABLE KEYS */;
-INSERT INTO `reservation` VALUES (1,1,1,'B10',1),(2,2,1,'B10',NULL),(3,4,1,'A15',2),(4,4,2,'A16',4);
+INSERT INTO `reservation` VALUES (1,1,1,'B10',1),(2,2,1,'B10',NULL),(3,4,1,'A15',2),(4,4,2,'A16',4),(5,1,2,'D15',NULL),(7,3,1,'D1',3);
 /*!40000 ALTER TABLE `reservation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -315,7 +320,7 @@ CREATE TABLE `users` (
   `creditcardExpiry` varchar(255) NOT NULL,
   PRIMARY KEY (`userID`),
   UNIQUE KEY `username_UNIQUE` (`username`)
-) ENGINE=InnoDB AUTO_INCREMENT=3;
+) ENGINE=InnoDB AUTO_INCREMENT=100000;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -337,4 +342,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-04-13  0:58:37
+-- Dump completed on 2022-04-15 14:33:14

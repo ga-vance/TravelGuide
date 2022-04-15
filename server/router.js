@@ -467,11 +467,6 @@ router.get("/admin", (request, response) => {
 // Takes a JSON object
 // formatted {name:String,username:String,password:String}
 router.put("/admin/:adminID", (request, response) => {
-  const token = validateToken(request);
-  if (token != request.params.adminID) {
-    response.sendStatus(403);
-    return;
-  }
   var conn = generateConnection();
   const parameters = request.body;
   conn.query("UPDATE `flightbooking`.`admin` SET ? WHERE adminID = ?", [parameters, request.params.adminID], (err, data) => {
@@ -489,6 +484,20 @@ router.get("/routes", (request, response) => {
   var conn = generateConnection();
   conn.query("SELECT r.name, r.origin, origin.city AS originCity, r.destination, destination.city AS destinationCity FROM flightbooking.route AS r JOIN flightbooking.airport AS origin ON origin.airportCode = r.origin JOIN flightbooking.airport AS destination ON destination.airportCode = r.destination", (err, data) => {
     if(err){
+      sendError(response, err);
+      return;
+    }
+    sendData(response, data);
+  });
+});
+
+// Get all of the details of a specific restriction
+// Takes the restriction name(primary Key) as a query parameter
+router.get("/restrictions", (request, response) => {
+  var conn = generateConnection();
+  const { type } = request.query;
+  conn.query("SELECT * FROM flightbooking.restrictions WHERE type = ?", type, (err, data) => {
+    if (err) {
       sendError(response, err);
       return;
     }
