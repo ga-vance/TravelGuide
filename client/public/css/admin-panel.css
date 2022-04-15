@@ -53,3 +53,9 @@
   border: solid 2px var(--text-box);
   border-radius: 1rem;
 }
+
+.admin-account{
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
