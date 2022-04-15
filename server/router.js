@@ -487,7 +487,7 @@ router.put("/admin/:adminID", (request, response) => {
 // Just query the route with no body to get the information back
 router.get("/routes", (request, response) => {
   var conn = generateConnection();
-  conn.query("SELECT r.origin, origin.city AS originCity, r.destination, destination.city AS destinationCity FROM flightbooking.route AS r JOIN flightbooking.airport AS origin ON origin.airportCode = r.origin JOIN flightbooking.airport AS destination ON destination.airportCode = r.destination", (err, data) => {
+  conn.query("SELECT r.name, r.origin, origin.city AS originCity, r.destination, destination.city AS destinationCity FROM flightbooking.route AS r JOIN flightbooking.airport AS origin ON origin.airportCode = r.origin JOIN flightbooking.airport AS destination ON destination.airportCode = r.destination", (err, data) => {
     if(err){
       sendError(response, err);
       return;

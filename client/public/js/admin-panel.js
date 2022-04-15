@@ -202,6 +202,73 @@ async function admin(){
     button.innerText = "Created Admin ✅";
     button.value = true;
   });
+
+  /**
+   * LAX-YYC | LAX    | YYC         | Passport    |
+   * | YEG-YYC | YEG    | YYC         | NULL        |
+   * | YYC-LAX | YYC    | LAX         | Passport    |
+   * | YYC-YEG | YYC    | YEG         | NULL        |
+   * | YYC-YYZ | YYC    | YYZ         | NULL        |
+   * | YYZ-YYC
+   */
+
+  // get all route names
+  var routeData = await fetch(`${apiOrigin}/routes`).then(res => res.json());
+
+  if(routeData.failed){
+    console.error("[error] failed to retrieve route data");
+    console.error(routeData.message);
+  }else{
+    for(var route of routeData.data){
+      var routeOption = document.createElement("option");
+      routeOption.value = route.name;
+      routeOption.innerText = route.name;
+      document.querySelector("#add-flight select[name='route']").appendChild(routeOption);
+    }
+  }
+
+  // allow for flight creation
+  document.querySelector("#add-flight").addEventListener("submit",  async (evt) => {
+    evt.preventDefault();
+    var form = evt.target;
+
+    var airline = form.airline.value;
+    var flightNumber = form["flight-num"].value;
+    var route = form.route.value;
+    var aircraft = form.aircraft.value;
+    var departure_date = form.departure_date.value;
+    var departure_time = form.departure_time.value;
+    var arrival_date = form.arrival_date.value;
+    var arrival_time = form.arrival_time.value;
+
+    var stats = await fetch(`${apiOrigin}/flights`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        airline,
+        flightNumber,
+        route,
+        aircraft,
+        departure_date,
+        departure_time,
+        arrival_date,
+        arrival_time,
+      }),
+    }).then(res => res.json());
+
+    var button = form.querySelector("input[type='submit']");
+    if(stats.failed){
+      console.error("[error] failed to add flight");
+      console.error(stats.message);
+      button.innerText = "Failed: Try Again?";
+      return;
+    }
+
+    button.value = "Created Flight ✅";
+    button.disabled = true;
+  });
 }
 
 window.addEventListener("load", () => {admin()});
