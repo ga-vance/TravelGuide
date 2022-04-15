@@ -9,8 +9,6 @@
 #main{
   height: 100%;
   display: grid;
-  grid-template-columns: 1fr 3fr;
-  grid-template-rows: auto 2fr 1fr;
   place-items: center;
   gap: 1rem;
   margin: 1rem 2rem;
@@ -30,17 +28,61 @@
   justify-content: center;
 }
 
+#user-info{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  place-items: center;
+}
+
+@media screen and (max-width: 800px){
+  #user-info{
+    grid-template-columns: 1fr;
+  }
+}
+
+#user-info > form{
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border: solid 2px var(--container-outline);
+  gap: 0.5rem;
+}
+
+#current-freq-fliers{
+  display: flex;
+  flex-direction: column;
+}
+
+#update-freq-flyers > div{
+  display: flex;
+}
+
+#update-account > .form-buttons{
+  display: flex;
+  margin: 2rem 0;
+  gap: 3rem;
+}
+
 #reservations{
   grid-column: 1/-1;
   margin: 1rem;
+
+  overflow-Y: scroll;
+  gap: 1rem;
+
+  height: min-content;
 }
 
 .reservation{
+  height: min-content;
   display: grid;
   grid-template-rows: auto 1fr;
-  border: solid 2px var(--container-outline);
+  border: solid 2px var(--strong-accent);
   border-radius: 1rem;
-  overflow: hidden;
+  overflow-X: hidden;
 }
 
 .reservation > h1{
@@ -52,33 +94,4 @@
 
 .reservation-details{
   padding: 1rem 2rem;
-}
-
-#account-manage{
-  grid-column: 1/-1;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-  border: none;
-}
-
-#account-manage > form{
-  height: 100%;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  border: solid 2px var(--container-outline);
-  gap: 0.5rem;
-}
-
-#update-freq-flyers > div{
-  display: flex;
-}
-
-#update-account > .form-buttons{
-  display: flex;
-  margin: 2rem 0;
-  gap: 3rem;
 }

@@ -143,7 +143,11 @@ async function search(){
     // if on homepage
     if(window.location.pathname === "/" || window.location.pathname === "/index.html"){
       document.querySelector("#navbar").classList.remove("home");
-      document.querySelector("#plane-bg").classList.add("search");
+      var bg = document.querySelector("#plane-bg");
+      bg.classList.add("search");
+      setTimeout(() => {
+        bg.parentElement.removeChild(bg);
+      }, 1000)
     }
 
     // if using mobile device
@@ -162,6 +166,7 @@ async function search(){
 
     let url = `/search.html?origin=${origin}&destination=${destination}&depart-date=${destTime}`;
     history.pushState({}, "", url);
+    urlParams = new URLSearchParams(window.location.search);
     performSearch(origin, destination, destTime);
   });
 

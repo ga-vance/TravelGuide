@@ -33,56 +33,7 @@
       <a href="/user-panel.html"><h1>👤</h1></a>
     </div>
     <div id="main">
-      <img class="user-pane" src="https://emojipedia-us.s3.dualstack.us-west-1.amazonaws.com/thumbs/120/twitter/322/bust-in-silhouette_1f464.png" />
       <div class="user-pane" id="user-info">
-        <h1>Tim Apple</h1>
-        <i>Next Flight: YYYY/mm/dd, hh:mm:ss&nbsp;p.m.</i>
-        <p>Frequently Flies With: KLM</p>
-      </div>
-      <div class="user-pane" id="reservations">
-        <div class="reservation">
-          <h1>Bording Pass</h1>
-          <div class="reservation-details">
-            <i>Reservation No. 123123</i>
-            <h2>Seat ID: A17</h2>
-            <h2>Luggage: 1 Carry-On, 1 Luggage</h2>
-          </div>
-        </div>
-      </div>
-      <div class="user-pane" id="account-manage">
-        <form id="update-freq-flyers">
-          <label for="airline">Frequent Flyer Information:</label>
-          <div>
-            <div>
-              <select name="airline">
-                <optgroup label="A">
-                  <option value="Air Canada">Air Canada</option>
-                  <option value="American Airlines">American Airlines</option>
-                </optgroup>
-                <optgroup label="B">
-                  <option value="British Airways">British Airways</option>
-                </optgroup>
-                <optgroup label="S">
-                  <option value="South African Airways">South African Airways</option>
-                </optgroup>
-                <optgroup label="T">
-                  <option value="Thai Airways">Thai Airways</option>
-                </optgroup>
-                <optgroup label="W">
-                  <option value="WestJet">WestJet</option>
-                </optgroup>
-              </select>
-            </div>
-            <div>
-              <select name="tier">
-                <option value=1>Silver</option>
-                <option value=2>Gold</option>
-                <option value=3>Platinum</option>
-              </select>
-            </div>
-          </div>
-          <input type="submit" value="Update Frequent Flyer details" />
-        </form>
         <form id="update-account">
           <div>
             <label for="name">Name:</label>
@@ -113,6 +64,53 @@
             <input type="submit" value="Delete Account"/>
           </div>
         </form>
+        <form id="update-freq-flyers">
+          <div id="current-freq-fliers">
+            <p>Thai Airways : Gold</p>
+          </div>
+          <label for="airline">Frequent Flyer Information:</label>
+          <div>
+            <div>
+              <select name="airline">
+                <optgroup label="A">
+                  <option value="Air Canada">Air Canada</option>
+                  <option value="American Airlines">American Airlines</option>
+                </optgroup>
+                <optgroup label="B">
+                  <option value="British Airways">British Airways</option>
+                </optgroup>
+                <optgroup label="S">
+                  <option value="South African Airways">South African Airways</option>
+                </optgroup>
+                <optgroup label="T">
+                  <option value="Thai Airways">Thai Airways</option>
+                </optgroup>
+                <optgroup label="W">
+                  <option value="WestJet">WestJet</option>
+                </optgroup>
+              </select>
+            </div>
+            <div>
+              <select name="tier">
+                <option value="Silver">Silver</option>
+                <option value="Gold">Gold</option>
+                <option value="Platinum">Platinum</option>
+              </select>
+            </div>
+          </div>
+          <input type="submit" value="Add Frequent Flyer Status" />
+        </form>
+      </div>
+      <div class="user-pane" id="reservations">
+        <div class="reservation">
+          <h1>Bording Pass</h1>
+          <div class="reservation-details">
+            <i>Reservation No. 123123</i>
+            <h2>Flight: A3117</h2>
+            <h3>Seat Number: A17</h3>
+            <h3>Luggage: 1 Carry-On, 1 Luggage</h3>
+          </div>
+        </div>
       </div>
     </div>
   </body>
