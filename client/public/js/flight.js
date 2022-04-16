@@ -76,10 +76,17 @@ async function flight(){
     }
   }
 
+  // prevent admins from creating reservations
+  if(tokenData.isAdmin){
+    document.querySelector("#reserve-section button").disabled = true;
+    document.querySelector("#reserve-section button").innerText = "Admin cannot reserve seats";
+  }
+
   // create reservations as necesssary
   var reserveForm = document.querySelector("#reserve-section");
   reserveForm.addEventListener("submit", async (evt) => {
     evt.preventDefault();
+
     var luggage = reserveForm.luggage.value;
     var flightNumId = flightId;
     var customerID = tokenData.userId;

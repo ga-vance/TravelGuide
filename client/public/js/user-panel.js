@@ -35,14 +35,14 @@ async function user(){
       var yeet = document.createElement("h2");
       yeet.classList.add("yeet-reservation");
       yeet.innerText = "🗑️";
+      yeet.id = res.reservation_number;
       yeet.addEventListener("click", async (evt) => {
         if(evt.target.innerText !== "🗑️?"){
           evt.target.innerText = "🗑️?";
           return;
         }
 
-        evt.target.resNumber = res.reservation_number;
-        var stats = await fetch(`${apiOrigin}/reservation/${evt.target.resNumber}`, {
+        var stats = await fetch(`${apiOrigin}/reservation/${evt.target.id}`, {
           method: "DELETE",
         }).then(resp => resp.json());
 
@@ -96,6 +96,8 @@ async function user(){
     // admin is viewing user account
     var urlParams = new URLSearchParams(window.location.search);
     userId = urlParams.get("view"); 
+    document.querySelector("#update-freq-flyers input[type='submit']").disabled = true;
+    document.querySelector("#update-freq-flyers input[type='submit']").value = "Admin cannot modify";
   }else if(tokenData.isAdmin){
     // account is actually administrative, go to admin panel
     window.location.replace("/admin-panel.html");
