@@ -181,8 +181,8 @@ router.post("/users", (request, response) => {
 // Delete a user account from the database
 // send to users/userID and that user will be romoved from the database
 router.delete("/users/:userID", (request, response) => {
-  const {tokenId} = validateToken(request);
-  if (token != request.params.userID) {
+  const {tokenId, isAdmin} = validateToken(request);
+  if (tokenId != request.params.userID && !isAdmin) {
     response.sendStatus(403);
     return;
   }
@@ -202,8 +202,8 @@ router.delete("/users/:userID", (request, response) => {
 // Even if not all the information is being changed, all of the information needs to be sent including information
 // that hasn't changed
 router.put("/users/:userID", (request, response) => {
-  const {tokenId} = validateToken(request);
-  if (tokenId != request.params.userID) {
+  const {tokenId, isAdmin} = validateToken(request);
+  if (tokenId != request.params.userID && !isAdmin) {
     response.sendStatus(403);
     return;
   }

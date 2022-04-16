@@ -96,6 +96,8 @@ async function user(){
     // admin is viewing user account
     var urlParams = new URLSearchParams(window.location.search);
     userId = urlParams.get("view"); 
+    document.querySelector("#update-freq-flyers input[type='submit']").disabled = true;
+    document.querySelector("#update-freq-flyers input[type='submit']").value = "Admin cannot modify";
   }else if(tokenData.isAdmin){
     // account is actually administrative, go to admin panel
     window.location.replace("/admin-panel.html");
