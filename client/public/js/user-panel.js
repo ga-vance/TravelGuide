@@ -35,14 +35,14 @@ async function user(){
       var yeet = document.createElement("h2");
       yeet.classList.add("yeet-reservation");
       yeet.innerText = "🗑️";
+      yeet.id = res.reservation_number;
       yeet.addEventListener("click", async (evt) => {
         if(evt.target.innerText !== "🗑️?"){
           evt.target.innerText = "🗑️?";
           return;
         }
 
-        evt.target.resNumber = res.reservation_number;
-        var stats = await fetch(`${apiOrigin}/reservation/${evt.target.resNumber}`, {
+        var stats = await fetch(`${apiOrigin}/reservation/${evt.target.id}`, {
           method: "DELETE",
         }).then(resp => resp.json());
 
