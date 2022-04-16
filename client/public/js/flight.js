@@ -76,43 +76,53 @@ async function flight(){
     var flightNumId = flightId;
     var customerID = tokenData.userId;
 
-    // generate a random seat
-    var seatNum, offset, range, seatLetters = "ABCDEF"
-    var seatLetter = seatLetters[Math.floor(Math.random() * seatLetters.length % seatLetters.length)];
-    switch(reserveForm.seat.value){
-      case("econ-front"):
-        offset = 18;
-        range = 10;
-        seatNum = offset + Math.floor(Math.random() * range % range);
-        break;
-      case("econ-mid"):
-        offset = 28;
-        range = 10;
-        seatNum = offset + Math.floor(Math.random() * range % range);
-        break;
-      case("econ-back"):
-        offset = 38;
-        range = 10;
-        seatNum = offset + Math.floor(Math.random() * range % range);
-        break;
-      case("busi-front"):
-        offset = 0;
-        range = 6;
-        seatNum = offset + Math.floor(Math.random() * range % range);
-        break;
-      case("busi-mid"):
-        offset = 6;
-        range = 6;
-        seatNum = offset + Math.floor(Math.random() * range % range);
-        break;
-      case("busi-back"):
-        offset = 12;
-        range = 6;
-        seatNum = offset + Math.floor(Math.random() * range % range);
-        break;
+    // select an unused seat
+    var seatData = await fetch(`${apiOrigin}/flightreservation/${flightNumId}`).then(res => res.json());
+    var takenSeats = [];
+    for(var reservation of seatData.data){
+      takenSeats.push(reservation.seat_number);
     }
 
-    var seat_number = seatLetter + seatNum;
+    var seatNumber;
+
+    do{
+      var seatNum, offset, range, seatLetters = "ABCDEF"
+      var seatLetter = seatLetters[Math.floor(Math.random() * seatLetters.length % seatLetters.length)];
+      switch(reserveForm.seat.value){
+        case("econ-front"):
+          offset = 18;
+          range = 10;
+          seatNum = offset + Math.floor(Math.random() * range % range);
+          break;
+        case("econ-mid"):
+          offset = 28;
+          range = 10;
+          seatNum = offset + Math.floor(Math.random() * range % range);
+          break;
+        case("econ-back"):
+          offset = 38;
+          range = 10;
+          seatNum = offset + Math.floor(Math.random() * range % range);
+          break;
+        case("busi-front"):
+          offset = 0;
+          range = 6;
+          seatNum = offset + Math.floor(Math.random() * range % range);
+          break;
+        case("busi-mid"):
+          offset = 6;
+          range = 6;
+          seatNum = offset + Math.floor(Math.random() * range % range);
+          break;
+        case("busi-back"):
+          offset = 12;
+          range = 6;
+          seatNum = offset + Math.floor(Math.random() * range % range);
+          break;
+      }
+
+      seat_number = seatLetter + seatNum;
+    }while(takenSeats.includes(seat_number));
 
     var stats = await fetch(`${apiOrigin}/reservation`, {
       method: "POST",
