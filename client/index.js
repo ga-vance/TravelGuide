@@ -99,6 +99,7 @@ function onRequest(request, response){
         case("/css/admin-panel.css"):
         case("/css/user-panel.css"):
         case("/css/flight.css"):
+        case("/css/login.css"):
           getCSS(urlInfo.pathname, response);
           break;
         case("/js/search.js"):
