@@ -77,6 +77,11 @@ async function admin(){
       // add appropriate actions
       deleteButton.addEventListener("click", async (evt) => {
         evt.preventDefault();
+
+        if(evt.target.innerText !== "Confirm Delete?"){
+          evt.target.innerText = "Confirm Delete?";
+          return;
+        }
         var adminId = evt.target.parentElement.id;
 
         var stats = await fetch(`${apiOrigin}/admin/${adminId}`, {
