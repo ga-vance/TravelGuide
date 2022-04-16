@@ -65,7 +65,15 @@ async function flight(){
 
   // Populate restriction information if there exists any
   if(flightData.restriction !== null){
-    /// TODO: query restrictions
+    var restrictionData = await fetch(`${apiOrigin}/restrictions?type=${flightData.restriction}`).then(res => res.json());
+
+    if(restrictionData.failed){
+      console.error("[error] failed to fetch restriction data");
+      console.error(restrictionData.message);
+      document.querySelector("#restriction-info p").innerText = "Failed to retreive restrictions";
+    }else{
+      document.querySelector("#restriction-info p").innerText = `${restrictionData.data[0].type}: ${restrictionData.data[0].Description}`;
+    }
   }
 
   // create reservations as necesssary
@@ -73,50 +81,60 @@ async function flight(){
   reserveForm.addEventListener("submit", async (evt) => {
     evt.preventDefault();
     var luggage = reserveForm.luggage.value;
-    var flightNumber = flightId;
+    var flightNumId = flightId;
     var customerID = tokenData.userId;
 
-    // generate a random seat
-    var seatNum, offset, range, seatLetters = "ABCDEF"
-    var seatLetter = seatLetters[Math.floor(Math.random() * seatLetters.length % seatLetters.length)];
-    switch(reserveForm.seat.value){
-      case("econ-front"):
-        offset = 18;
-        range = 10;
-        seatNum = offset + Math.floor(Math.random() * range % range);
-        break;
-      case("econ-mid"):
-        offset = 28;
-        range = 10;
-        seatNum = offset + Math.floor(Math.random() * range % range);
-        break;
-      case("econ-back"):
-        offset = 38;
-        range = 10;
-        seatNum = offset + Math.floor(Math.random() * range % range);
-        break;
-      case("busi-front"):
-        offset = 0;
-        range = 6;
-        seatNum = offset + Math.floor(Math.random() * range % range);
-        break;
-      case("busi-mid"):
-        offset = 6;
-        range = 6;
-        seatNum = offset + Math.floor(Math.random() * range % range);
-        break;
-      case("busi-back"):
-        offset = 12;
-        range = 6;
-        seatNum = offset + Math.floor(Math.random() * range % range);
-        break;
+    // select an unused seat
+    var seatData = await fetch(`${apiOrigin}/flightreservation/${flightNumId}`).then(res => res.json());
+    var takenSeats = [];
+    for(var reservation of seatData.data){
+      takenSeats.push(reservation.seat_number);
     }
 
-    var seat_number = seatLetter + seatNum;
+    var seatNumber;
+
+    do{
+      var seatNum, offset, range, seatLetters = "ABCDEF"
+      var seatLetter = seatLetters[Math.floor(Math.random() * seatLetters.length % seatLetters.length)];
+      switch(reserveForm.seat.value){
+        case("econ-front"):
+          offset = 18;
+          range = 10;
+          seatNum = offset + Math.floor(Math.random() * range % range);
+          break;
+        case("econ-mid"):
+          offset = 28;
+          range = 10;
+          seatNum = offset + Math.floor(Math.random() * range % range);
+          break;
+        case("econ-back"):
+          offset = 38;
+          range = 10;
+          seatNum = offset + Math.floor(Math.random() * range % range);
+          break;
+        case("busi-front"):
+          offset = 0;
+          range = 6;
+          seatNum = offset + Math.floor(Math.random() * range % range);
+          break;
+        case("busi-mid"):
+          offset = 6;
+          range = 6;
+          seatNum = offset + Math.floor(Math.random() * range % range);
+          break;
+        case("busi-back"):
+          offset = 12;
+          range = 6;
+          seatNum = offset + Math.floor(Math.random() * range % range);
+          break;
+      }
+
+      seat_number = seatLetter + seatNum;
+    }while(takenSeats.includes(seat_number));
 
     var stats = await fetch(`${apiOrigin}/reservation`, {
       method: "POST",
-      body: JSON.stringify({flightNumber, customerID, seat_number, luggage}),
+      body: JSON.stringify({flightNumId, customerID, seat_number, luggage}),
       headers:{
         "Content-Type": "application/json",
       },

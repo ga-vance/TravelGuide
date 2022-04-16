@@ -17,6 +17,7 @@ function f(){
 
     if(password !== checkPassword){
       console.error("[error] password mismatch!");
+      alert("Passwords do not match");
       return;
     }
 

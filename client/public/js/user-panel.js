@@ -32,6 +32,30 @@ async function user(){
       var luggage = document.createElement("h3");
       luggage.innerText = `Luggage: 1 Carry-On, ${res.luggage || 0} Luggage`;
 
+      var yeet = document.createElement("h2");
+      yeet.classList.add("yeet-reservation");
+      yeet.innerText = "🗑️";
+      yeet.addEventListener("click", async (evt) => {
+        if(evt.target.innerText !== "🗑️?"){
+          evt.target.innerText = "🗑️?";
+          return;
+        }
+
+        evt.target.resNumber = res.reservation_number;
+        var stats = await fetch(`${apiOrigin}/reservation/${evt.target.resNumber}`, {
+          method: "DELETE",
+        }).then(resp => resp.json());
+
+        if(stats.failed){
+          console.error("[error] failed to delete reservation");
+          yeet.innerText = "Failed, try again?";
+          return;
+        }
+
+        var e = evt.target.parentElement;
+        e.parentElement.removeChild(e);
+      });
+
       resDetails.appendChild(reservationNumber);
       resDetails.appendChild(flightCode);
       resDetails.appendChild(flightLength);
@@ -40,6 +64,8 @@ async function user(){
 
       reservation.appendChild(title);
       reservation.appendChild(resDetails);
+
+      reservation.appendChild(yeet);
 
       document.querySelector("#reservations").appendChild(reservation);
     }
@@ -64,13 +90,18 @@ async function user(){
     return;
   }
 
-  if(tokenData.isAdmin){
+  var userId = tokenData.userId;
+
+  if(tokenData.isAdmin && window.location.search.indexOf("view") > 0){
+    // admin is viewing user account
+    var urlParams = new URLSearchParams(window.location.search);
+    userId = urlParams.get("view"); 
+  }else if(tokenData.isAdmin){
     // account is actually administrative, go to admin panel
     window.location.replace("/admin-panel.html");
     return;
   }
 
-  var userId = tokenData.userId;
   var userJson = await fetch(`${apiOrigin}/users/${userId}`, {
     method: "GET",
     headers: {
@@ -137,10 +168,11 @@ async function user(){
 
     if(form.password.value !== form["confirm-password"].value){
       console.log("[error] passwords do not match");
+      alert("passwords do not match");
       return;
     }
 
-    var password = form.password.value !== "*********" ? userInfo.password : form.password.value;
+    var password = form.password.value === "*********" ? userInfo.password : form.password.value;
     var creditcardnumber = form["credit-number"].value.includes("*") ? userInfo.creditcardnumber : form["credit-number"].value;
     var creditcardExpiry = form["credit-expire"].value;
 
@@ -162,6 +194,7 @@ async function user(){
       return
     }
 
+    alert("successfully updated account information");
     window.location.reload(false);
   })
 

@@ -49,11 +49,12 @@ function validateToken(request){
     var token = request.header("Authorization").split(' ').slice(-1)[0];
     var tokenString = new Buffer.from(token.split(' ').slice(-1)[0].split('.')[1], 'base64').toString('ascii')
     var tokenId = JSON.parse(tokenString).userId;
+    var isAdmin = JSON.parse(tokenString).isAdmin;
     if(jwt.verify(token, process.env.JWT_SECRET_KEY)){
-      return tokenId;
+      return {tokenId, isAdmin};
     }
   }catch (err){
-    return null;
+    return {tokenId: null, isAdmin: false};
   }
 }
 
@@ -147,8 +148,8 @@ router.get("/users", (request, response) => {
 // Get a specific user from the database
 // Query the route/userID to get that users information back
 router.get("/users/:userID", (request, response) => {
-  const token = validateToken(request);
-  if (token != request.params.userID) {
+  const {tokenId, isAdmin} = validateToken(request);
+  if (tokenId != request.params.userID && !isAdmin) {
     response.sendStatus(403);
     return;
   }
@@ -180,7 +181,7 @@ router.post("/users", (request, response) => {
 // Delete a user account from the database
 // send to users/userID and that user will be romoved from the database
 router.delete("/users/:userID", (request, response) => {
-  const token = validateToken(request);
+  const {tokenId} = validateToken(request);
   if (token != request.params.userID) {
     response.sendStatus(403);
     return;
@@ -201,8 +202,8 @@ router.delete("/users/:userID", (request, response) => {
 // Even if not all the information is being changed, all of the information needs to be sent including information
 // that hasn't changed
 router.put("/users/:userID", (request, response) => {
-  const token = validateToken(request);
-  if (token != request.params.userID) {
+  const {tokenId} = validateToken(request);
+  if (tokenId != request.params.userID) {
     response.sendStatus(403);
     return;
   }
@@ -299,9 +300,9 @@ router.put("/flights/:flightnumID", (request, response) => {
 // Takes a JSON object formatted
 // {"customerID" : INT,"airline": String,"tier": STRING}
 router.post("/frequentFlier", (request, response) => {
-  const token = validateToken(request);
+  const {tokenId, isAdmin} = validateToken(request);
   const { customerID, airline, tier } = request.body;
-  if (token != customerID) {
+  if (tokenId != customerID) {
     response.sendStatus(403);
     return;
   } 
@@ -318,8 +319,8 @@ router.post("/frequentFlier", (request, response) => {
 
 // Get frequent flier statuses of a customer Takes the userID number and returns all of their freqflier statuses
 router.get("/frequentFlier/:customerID", (request, response) => {
-  const token = validateToken(request);
-  if (token != request.params.customerID) {
+  const {tokenId, isAdmin} = validateToken(request);
+  if (tokenId != request.params.customerID && !isAdmin) {
     response.sendStatus(403);
     return;
   }
@@ -393,13 +394,13 @@ router.delete("/reservation/:reservation_number", (request, response) => {
 // See all reservations of a user
 // Takes the userID as part of the URL path and returns all of that users reservations
 router.get("/reservation/:userID", (request, response) => {
-  const token = validateToken(request);
-  if (token != request.params.userID) {
+  const {tokenId, isAdmin} = validateToken(request);
+  if (tokenId != request.params.userID && !isAdmin) {
     response.sendStatus(403);
     return;
   }
   var conn = generateConnection();
-  conn.query("SELECT r.reservation_number, f.airline, f.flightNumber, f.route, f.departure_date, f.departure_time, r.seat_number, r.luggage FROM flightbooking.reservation AS r INNER JOIN flightbooking.flight AS f ON r.flightNumber = f.flightnumID WHERE r.customerID = ?", [request.params.userID], (err, data) => {
+  conn.query("SELECT r.reservation_number, f.airline, f.flightNumber, f.route, f.departure_date, f.departure_time, r.seat_number, r.luggage FROM flightbooking.reservation AS r INNER JOIN flightbooking.flight AS f ON r.flightNumID = f.flightnumID WHERE r.customerID = ?", [request.params.userID], (err, data) => {
     if (err) {
       sendError(response, err);
       return;
@@ -467,6 +468,11 @@ router.get("/admin", (request, response) => {
 // Takes a JSON object
 // formatted {name:String,username:String,password:String}
 router.put("/admin/:adminID", (request, response) => {
+  const {tokenId} = validateToken(request);
+  if (tokenId != request.params.adminID) {
+    response.sendStatus(403);
+    return;
+  }
   var conn = generateConnection();
   const parameters = request.body;
   conn.query("UPDATE `flightbooking`.`admin` SET ? WHERE adminID = ?", [parameters, request.params.adminID], (err, data) => {
@@ -482,7 +488,7 @@ router.put("/admin/:adminID", (request, response) => {
 // Just query the route with no body to get the information back
 router.get("/routes", (request, response) => {
   var conn = generateConnection();
-  conn.query("SELECT r.origin, origin.city AS originCity, r.destination, destination.city AS destinationCity FROM flightbooking.route AS r JOIN flightbooking.airport AS origin ON origin.airportCode = r.origin JOIN flightbooking.airport AS destination ON destination.airportCode = r.destination", (err, data) => {
+  conn.query("SELECT r.name, r.origin, origin.city AS originCity, r.destination, destination.city AS destinationCity FROM flightbooking.route AS r JOIN flightbooking.airport AS origin ON origin.airportCode = r.origin JOIN flightbooking.airport AS destination ON destination.airportCode = r.destination", (err, data) => {
     if(err){
       sendError(response, err);
       return;

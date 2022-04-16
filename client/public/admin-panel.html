@@ -36,12 +36,9 @@
       <form class="admin-pane" id="add-flight">
         <h1>Add Flight</h1>
         <div>
-          <label for="flight-depart">Departing from:</label>
-          <input type="text" name="flight-depart" />
-        </div>
-        <div>
-          <label for="flight-arrive">Arriving at:</label>
-          <input type="text" name="flight-arrive" />
+          <label for="route">Route Name:</label>
+          <select name="route">
+          </select>
         </div>
         <div>
           <label for="flight-num">Flight Number:</label>
@@ -51,68 +48,99 @@
           <label for="airline">Airline</label>
           <select name="airline" placeholder="Select an airline">
             <option value="Air Canada">Air Canada</option>
-            <option value="West Jet">West Jet</option>
-            <option value="KLM">KLM</option>
+            <option value="American Airlines">American Airlines</option>
+            <option value="British Airways">British Airways</option>
+            <option value="Thai Airways">Thai Airways</option>
+            <option value="WestJet">WestJet</option>
           </select>
         </div>
         <div>
           <label for="aircraft">Aircraft used:</label>
           <select name="aircraft" placeholder="Select an aircraft">
-            <option value="Air Canada">Airbus 320</option>
-            <option value="West Jet">Boeing 737</option>
-            <option value="KLM">Concord</option>
+            <option value="11">747-8 | Thai Airways</option>
+            <option value="1">787-9 | WestJet</option>
+            <option value="5">787-9 | Air Canada</option>
+            <option value="8">787-9 | American Airlines</option>
+            <option value="10">787-9 | British Airways</option>
+            <option value="15">787-9 | South African Airways</option>
+            <option value="3">A320-200 | Air Canada</option>
+            <option value="6">A320-200 | American Airlines</option>
+            <option value="9">A320-200 | British Airways</option>
+            <option value="13">A320-200 | South African Airways</option>
+            <option value="12">A380-800 | Thai Airways</option>
+            <option value="2">Dash 8-400 | WestJet</option>
+            <option value="4">Dash 8-400 | Air Canada</option>
+            <option value="7">Dash 8-400 | American Airlines</option>
+            <option value="14">Dash 8-400 | South African Airways</option>
           </select>
         </div>
+        <div>
+          <label for="departure_date">Departure Date</label>
+          <input type="date" name="departure_date" />
+        </div>
+        <div>
+          <label for="departure_time">Departure Time</label>
+          <input type="time" name="departure_time" />
+        </div>
+        <div>
+          <label for="arrival_date">Arrival Date</label>
+          <input type="date" name="arrival_date" />
+        </div>
+        <div>
+          <label for="arrival_time">Arrival Time</label>
+          <input type="time" name="arrival_time" />
+        </div>
+        <input type="submit" value="Add Flight" />
       </form>
-      <div id="list-users" class="admin-pane">
-        <h1>Manage Users</h1>
-        <div class="user">
-          <h1>👤</h1>
-          <div class="user-details">
-            <p>Tim Apple</p>
-            <i>Next Flight: YYYY-mm-dd, hh:mm:ss&nbsp;p.m.</i>
-          </div>
-          <a href="user-panel"><b>View User</b></a>
+      <form class="admin-pane" id="create-admin">
+        <h1>Add Admin</h1>
+        <div>
+          <label for="name">Name:</label>
+          <input type="text" name="name" placeholder="name" />
         </div>
-        <div class="user">
-          <h1>👤</h1>
-          <div class="user-details">
-            <p>Tim Apple</p>
-            <i>Next Flight: YYYY-mm-dd, hh:mm:ss&nbsp;p.m.</i>
-          </div>
-          <a href="user-panel"><b>View User</b></a>
+        <div>
+          <label for="username">Username:</label>
+          <input type="text" name="username" placeholder="username" />
         </div>
-        <div class="user">
-          <h1>👤</h1>
-          <div class="user-details">
-            <p>Tim Apple</p>
-            <i>Next Flight: YYYY-mm-dd, hh:mm:ss&nbsp;p.m.</i>
-          </div>
-          <a href="user-panel"><b>View User</b></a>
+        <div>
+          <label for="password">Password:</label>
+          <input type="password" name="password" placeholder="password" />
         </div>
-        <div class="user">
-          <h1>👤</h1>
-          <div class="user-details">
-            <p>Tim Apple</p>
-            <i>Next Flight: YYYY-mm-dd, hh:mm:ss&nbsp;p.m.</i>
+        <input type="submit" value="Create Admin" />
+      </form>
+      <div class="admin-pane" id="manage-users">
+        <div id="list-admin">
+          <h1>Manage Admins</h1>
+          <div class="admin">
+            <h1>👤</h1>
+            <div class="admin-details">
+              <p>Admin Name</p>
+              <i>Admin No. 1</i>
+            </div>
+            <form id="1" class="admin-account">
+              <div>
+                <label for="username">Username</label>
+                <input name="username" type="text" value="admin" placeholder="username" />
+              </div>
+              <div>
+                <label for="password">Password</label>
+                <input name="password" type="password" value="********" placeholder="password" />
+              </div>
+              <input type="submit" value="Update" />
+              <input type="submit" value="Delete" />
+            </form>
           </div>
-          <a href="user-panel"><b>View User</b></a>
         </div>
-        <div class="user">
-          <h1>👤</h1>
-          <div class="user-details">
-            <p>Tim Apple</p>
-            <i>Next Flight: YYYY-mm-dd, hh:mm:ss&nbsp;p.m.</i>
+        <div id="list-users">
+          <h1>Manage Users</h1>
+          <div class="user">
+            <h1>👤</h1>
+            <div class="user-details">
+              <p>Tim Apple</p>
+              <i>User No. 1</i>
+            </div>
+            <a href="/user-panel.html">View account</a>
           </div>
-          <a href="user-panel"><b>View User</b></a>
-        </div>
-        <div class="user">
-          <h1>👤</h1>
-          <div class="user-details">
-            <p>Tim Apple</p>
-            <i>Next Flight: YYYY-mm-dd, hh:mm:ss&nbsp;p.m.</i>
-          </div>
-          <a href="user-panel"><b>View User</b></a>
         </div>
       </div>
     </div>
