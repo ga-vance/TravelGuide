@@ -245,8 +245,8 @@ async function admin(){
       return;
     }
 
-    button.innerText = "Created Admin ✅";
-    button.value = true;
+    button.value = "Created Admin ✅";
+    button.disabled = true;
   });
 
   // get all route names
