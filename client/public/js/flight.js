@@ -65,7 +65,15 @@ async function flight(){
 
   // Populate restriction information if there exists any
   if(flightData.restriction !== null){
-    /// TODO: query restrictions
+    var restrictionData = await fetch(`${apiOrigin}/restrictions?type=${flightData.restriction}`).then(res => res.json());
+
+    if(restrictionData.failed){
+      console.error("[error] failed to fetch restriction data");
+      console.error(restrictionData.message);
+      document.querySelector("#restriction-info p").innerText = "Failed to retreive restrictions";
+    }else{
+      document.querySelector("#restriction-info p").innerText = `${restrictionData.data[0].type}: ${restrictionData.data[0].Description}`;
+    }
   }
 
   // create reservations as necesssary
