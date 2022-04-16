@@ -194,6 +194,7 @@ async function user(){
       return
     }
 
+    alert("successfully updated account information");
     window.location.reload(false);
   })
 
