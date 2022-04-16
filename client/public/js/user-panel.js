@@ -168,10 +168,11 @@ async function user(){
 
     if(form.password.value !== form["confirm-password"].value){
       console.log("[error] passwords do not match");
+      alert("passwords do not match");
       return;
     }
 
-    var password = form.password.value !== "*********" ? userInfo.password : form.password.value;
+    var password = form.password.value === "*********" ? userInfo.password : form.password.value;
     var creditcardnumber = form["credit-number"].value.includes("*") ? userInfo.creditcardnumber : form["credit-number"].value;
     var creditcardExpiry = form["credit-expire"].value;
 
