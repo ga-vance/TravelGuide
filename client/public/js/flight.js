@@ -73,7 +73,7 @@ async function flight(){
   reserveForm.addEventListener("submit", async (evt) => {
     evt.preventDefault();
     var luggage = reserveForm.luggage.value;
-    var flightNumber = flightId;
+    var flightNumId = flightId;
     var customerID = tokenData.userId;
 
     // generate a random seat
@@ -116,7 +116,7 @@ async function flight(){
 
     var stats = await fetch(`${apiOrigin}/reservation`, {
       method: "POST",
-      body: JSON.stringify({flightNumber, customerID, seat_number, luggage}),
+      body: JSON.stringify({flightNumId, customerID, seat_number, luggage}),
       headers:{
         "Content-Type": "application/json",
       },
