@@ -300,7 +300,7 @@ router.put("/flights/:flightnumID", (request, response) => {
 // Takes a JSON object formatted
 // {"customerID" : INT,"airline": String,"tier": STRING}
 router.post("/frequentFlier", (request, response) => {
-  const {tokenId} = validateToken(request);
+  const {tokenId, isAdmin} = validateToken(request);
   const { customerID, airline, tier } = request.body;
   if (tokenId != customerID) {
     response.sendStatus(403);
@@ -319,8 +319,8 @@ router.post("/frequentFlier", (request, response) => {
 
 // Get frequent flier statuses of a customer Takes the userID number and returns all of their freqflier statuses
 router.get("/frequentFlier/:customerID", (request, response) => {
-  const {tokenId} = validateToken(request);
-  if (tokenId != request.params.customerID) {
+  const {tokenId, isAdmin} = validateToken(request);
+  if (tokenId != request.params.customerID && !isAdmin) {
     response.sendStatus(403);
     return;
   }
@@ -394,8 +394,8 @@ router.delete("/reservation/:reservation_number", (request, response) => {
 // See all reservations of a user
 // Takes the userID as part of the URL path and returns all of that users reservations
 router.get("/reservation/:userID", (request, response) => {
-  const {tokenId} = validateToken(request);
-  if (tokenId != request.params.userID) {
+  const {tokenId, isAdmin} = validateToken(request);
+  if (tokenId != request.params.userID && !isAdmin) {
     response.sendStatus(403);
     return;
   }
