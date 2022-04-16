@@ -137,6 +137,25 @@ async function search(){
   travelForm.addEventListener("submit", (evt) => {
     evt.preventDefault();
 
+    let originName = travelForm.origin.value;
+    let destinationName = travelForm.destination.value;
+    let destTime = travelForm["depart-date"].value;
+
+    // get the airport codes
+    let origin = possibleOrigins[originName];
+    if(origin === undefined){
+      alert(`currently not serving flights from ${originName}`);
+      travelForm.origin.value = "";
+      return;
+    }
+
+    let destination = possibleOrigins[destinationName];
+    if(destination === undefined){
+      alert(`currently not serving flights to ${destinationName}`);
+      travelForm.destination.value = "";
+      return;
+    }
+
     // remove "flight" class from main if necessary
     document.querySelector("#main").classList.remove("flight");
 
@@ -155,14 +174,6 @@ async function search(){
       document.querySelector("#search-icon").classList.remove("disabled");
       document.querySelector("#search-bar").classList.add("hidden");
     }
-
-    let originName = travelForm.origin.value;
-    let destinationName = travelForm.destination.value;
-    let destTime = travelForm["depart-date"].value;
-
-    // get the airport codes
-    let origin = possibleOrigins[originName];
-    let destination = possibleOrigins[destinationName];
 
     let url = `/search.html?origin=${origin}&destination=${destination}&depart-date=${destTime}`;
     history.pushState({}, "", url);
