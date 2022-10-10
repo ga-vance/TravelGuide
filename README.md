@@ -1,4 +1,4 @@
-# CPSC471FinalProject
+# Database Management Systems Project
 ### Submission by: Greg Vance, Ethan Sengsavang
 
 ## Starting the Servers
